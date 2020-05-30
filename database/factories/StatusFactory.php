@@ -9,7 +9,7 @@ use Faker\Generator as Faker;
 $factory->define(Status::class, function (Faker $faker, array $attributes) {
     return [
         'level_id' => $attributes['level_id'] ?? factory(Level::class)->create()->id,
-        'attempt' => $faker->numberBetween(1, 255),
+        'attempt' => $faker->unique()->numberBetween(1, 255),
         'status' => $faker->randomElement(['ongoing', 'finished', 'dropped']),
     ];
 });
