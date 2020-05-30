@@ -8,9 +8,31 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property
- * @property BelongsTo|Game game
- * @property HasMany|Collection|Status[] statuses
+ * App\Level
+ *
+ * @property int $id
+ * @property int $game_id
+ * @property string $name
+ * @property int $order
+ * @property int $duration
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Game $game
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Status[] $statuses
+ * @property-read int|null $statuses_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Level newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Level newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Level query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Level whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Level whereDuration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Level whereGameId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Level whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Level whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Level whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Level whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @noinspection PhpFullyQualifiedNameUsageInspection
+ * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 class Level extends Model
 {
