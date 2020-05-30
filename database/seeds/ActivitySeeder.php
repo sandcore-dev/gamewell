@@ -1,10 +1,10 @@
 <?php
 
-use App\Duration;
+use App\Activity;
 use App\Status;
 use Illuminate\Database\Seeder;
 
-class DurationSeeder extends Seeder
+class ActivitySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -20,7 +20,7 @@ class DurationSeeder extends Seeder
         $statuses = Status::all();
 
         foreach ($statuses as $status) {
-            factory(Duration::class, rand(3, 15))->create([
+            factory(Activity::class, rand(3, 15))->create([
                 'status_id' => $status->id,
             ]);
         }
