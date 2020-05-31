@@ -1,0 +1,79 @@
+// Body
+$body-bg: #666;
+$body-color: #fff;
+
+// Typography
+$font-family-base: 'Courier New', monspace;
+$font-size-base: 1.2rem;
+$line-height-base: 1.1;
+
+// Colors
+$light-blue: #21d0db;
+$black: #000;
+$white: #fff;
+
+// Misc
+$link-color: $white;
+$link-hover-color: $light-blue;
+$link-hover-decoration: none;
+
+// Styling
+.logo {
+    @extend .mb-3;
+
+    img {
+        width: 100%;
+    }
+}
+
+.nav {
+    @extend .mb-3;
+    @extend .row;
+
+    .col {
+        text-align: center;
+    }
+
+    .previous {
+        @extend .col;
+        text-align: left;
+    }
+
+    .next {
+        @extend .col;
+        text-align: right;
+    }
+}
+
+.day {
+    header {
+        @extend .p-1;
+        @extend .pl-2;
+        @extend .pr-2;
+        @extend .mb-3;
+        background-color: $light-blue;
+        color: $black;
+        font-size: 1.7rem;
+        font-weight: bold;
+    }
+}
+
+.activity {
+    @extend .row;
+    @extend .pl-3;
+    @extend .pr-3;
+    @extend .mb-3;
+
+    .status-name {
+        color: $light-blue;
+        font-weight: bold;
+
+        &:before {
+            content: '(';
+        }
+
+        &:after {
+            content: ')';
+        }
+    }
+}

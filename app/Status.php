@@ -53,4 +53,9 @@ class Status extends Model
     {
         return $this->hasMany(Activity::class);
     }
+
+    public function getNameAttribute(): string
+    {
+        return __(':name - attempt :attempt', ['name' => $this->level->name, 'attempt' => $this->attempt]);
+    }
 }

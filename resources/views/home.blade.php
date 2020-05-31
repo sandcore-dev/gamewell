@@ -1,23 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+            <nav class="nav">
+                @if($beforeYear && $beforeWeek)
+                    <div class="previous">
+                        <a href="{{ route('week', ['year' => $beforeYear, 'week' => $beforeWeek]) }}">&laquo; @lang('Week :week, :year', ['year' => $beforeYear, 'week' => $beforeWeek])</a>
+                    </div>
+                @endif
+                @if($afterYear && $afterWeek)
+                    <div class="next">
+                        <a href="{{ route('week', ['year' => $afterYear, 'week' => $afterWeek]) }}">@lang('Week :week, :year', ['year' => $afterYear, 'week' => $afterWeek]) &raquo;</a>
+                    </div>
+                @endif
+            </nav>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+            @foreach($groupedActivities as $date => $activities)
+                <article class="day">
+                    <header class="header">{{ $date }}</header>
+
+                    @foreach($activities as $activity)
+                        <div class="activity">
+                            <div class="col-auto p-0 pr-1 game-name">
+                                <a href="#">{{ $activity->status->level->game->name }}</a>
+                            </div>
+                            <div class="col p-0 status-name">{{ $activity->status->name }}</div>
+                            <div class="col-auto p-0 duration">{{ $activity->formattedDuration }}</div>
                         </div>
-                    @endif
-
-                    You are logged in!
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                    @endforeach
+                </article>
+            @endforeach
 @endsection
