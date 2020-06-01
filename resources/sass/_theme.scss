@@ -78,11 +78,17 @@ $card-spacer-y: 0.25rem;
     }
 }
 
-.activity {
+.game {
     @extend .row;
     @extend .pl-3;
     @extend .pr-3;
-    @extend .mb-3;
+    @extend .mb-1;
+
+    .name {
+        @extend .col-auto;
+        @extend .p-0;
+        @extend .pr-1;
+    }
 
     .status {
         @extend .col;
@@ -98,6 +104,11 @@ $card-spacer-y: 0.25rem;
         &:after {
             content: ')';
         }
+    }
+
+    .duration {
+        @extend .col-auto;
+        @extend .p-0;
     }
 }
 

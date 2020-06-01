@@ -2,6 +2,6 @@
 
 return [
     'header' => [
-        'image' => asset('storage/logo.png'),
+        'image' => 'storage/logo.png',
     ],
 ];

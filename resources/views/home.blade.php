@@ -19,12 +19,12 @@
                     <div class="card-header">{{ $date }}</div>
                     <div class="card-body">
                         @foreach($activities as $activity)
-                            <div class="activity">
-                                <div class="col-auto p-0 pr-1 game-name">
-                                    <a href="#">{{ $activity->status->level->game->name }}</a>
+                            <div class="game">
+                                <div class="name">
+                                    <a href="{{ route('games.show', ['game' => $activity->status->level->game]) }}">{{ $activity->status->level->game->name }}</a>
                                 </div>
                                 <div class="status">{{ $activity->status->name }}</div>
-                                <div class="col-auto p-0 duration">{{ $activity->formattedDuration }}</div>
+                                <div class="duration">{{ $activity->formattedDuration }}</div>
                             </div>
                         @endforeach
                     </div>

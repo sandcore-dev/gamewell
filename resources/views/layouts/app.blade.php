@@ -28,6 +28,9 @@
 
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav mr-auto">
+                                    <li>
+                                        <a class="nav-link" href="{{ route('games.index') }}">@lang('Games')</a>
+                                    </li>
                                 </ul>
                                 <ul class="navbar-nav ml-auto">
                                     <li class="nav-item">
@@ -42,7 +45,7 @@
                         </nav>
 
                         <div class="logo">
-                            <a href="{{ route('home') }}"><img src="{{ config('gamewell.header.image') }}" alt="logo"/></a>
+                            <a href="{{ route('home') }}"><img src="{{ asset(config('gamewell.header.image')) }}" alt="logo"/></a>
                         </div>
 
                         @yield('content')

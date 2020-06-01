@@ -21,4 +21,6 @@ Auth::routes([
 ]);
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('/{year}/{week}', 'HomeController@week')->name('week');
+Route::get('/{year}/{week}', 'HomeController@week')->name('week')->where(['year' => '\d{4}', 'week' => '\d+']);
+
+Route::resource('/games', 'GameController');
