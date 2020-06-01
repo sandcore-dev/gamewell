@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\FormattedDuration;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,6 +37,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Status extends Model
 {
+    use FormattedDuration;
+
     protected $fillable = ['level_id', 'attempt', 'status'];
 
     /**

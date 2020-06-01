@@ -116,6 +116,11 @@ $card-spacer-y: 0.25rem;
     .card-header {
         font-size: 1.7rem;
         font-weight: bold;
+
+        .duration {
+            @extend .float-right;
+            color: $white;
+        }
     }
 
     .card-body {
