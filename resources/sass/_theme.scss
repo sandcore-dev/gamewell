@@ -1,21 +1,37 @@
+// Colors
+$light-blue: #21d0db;
+$black: #000;
+$white: #fff;
+$dark-grey: #666;
+
 // Body
-$body-bg: #666;
-$body-color: #fff;
+$body-bg: $dark-grey;
+$body-color: $white;
 
 // Typography
 $font-family-base: 'Courier New', monspace;
 $font-size-base: 1.2rem;
 $line-height-base: 1.1;
 
-// Colors
-$light-blue: #21d0db;
-$black: #000;
-$white: #fff;
+// General
+$primary: $light-blue;
+$border-radius: 0;
 
-// Misc
+// Link
 $link-color: $white;
 $link-hover-color: $light-blue;
 $link-hover-decoration: none;
+
+// Button
+$btn-font-weight: bold;
+
+// Card
+$card-bg: $dark-grey;
+$card-cap-bg: $light-blue;
+$card-cap-color: $black;
+$card-border-width: 0;
+$card-spacer-x: 0.5rem;
+$card-spacer-y: 0.25rem;
 
 // Styling
 .logo {
@@ -27,8 +43,8 @@ $link-hover-decoration: none;
 }
 
 .nav {
-    @extend .mb-3;
     @extend .row;
+    @extend .mb-3;
 
     .col {
         text-align: center;
@@ -45,16 +61,20 @@ $link-hover-decoration: none;
     }
 }
 
-.day {
-    header {
-        @extend .p-1;
-        @extend .pl-2;
-        @extend .pr-2;
-        @extend .mb-3;
-        background-color: $light-blue;
-        color: $black;
-        font-size: 1.7rem;
-        font-weight: bold;
+.logout {
+    @extend .form-inline;
+
+    label {
+        cursor: pointer;
+
+        &:hover {
+            color: $link-hover-color;
+            text-decoration: $link-hover-decoration;
+        }
+    }
+
+    button {
+        display: none;
     }
 }
 
@@ -64,7 +84,10 @@ $link-hover-decoration: none;
     @extend .pr-3;
     @extend .mb-3;
 
-    .status-name {
+    .status {
+        @extend .col;
+        @extend .p-0;
+
         color: $light-blue;
         font-weight: bold;
 
@@ -75,5 +98,16 @@ $link-hover-decoration: none;
         &:after {
             content: ')';
         }
+    }
+}
+
+.card {
+    .card-header {
+        font-size: 1.7rem;
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: $card-spacer-y*4 $card-spacer-x;
     }
 }

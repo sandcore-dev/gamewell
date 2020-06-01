@@ -13,7 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes(['register' => false]);
+Auth::routes([
+    'register' => false,
+    'reset' => false,
+    'confirm' => false,
+    'verify' => false,
+]);
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/{year}/{week}', 'HomeController@week')->name('week');

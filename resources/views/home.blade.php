@@ -15,18 +15,19 @@
             </nav>
 
             @foreach($groupedActivities as $date => $activities)
-                <article class="day">
-                    <header class="header">{{ $date }}</header>
-
-                    @foreach($activities as $activity)
-                        <div class="activity">
-                            <div class="col-auto p-0 pr-1 game-name">
-                                <a href="#">{{ $activity->status->level->game->name }}</a>
+                <div class="card">
+                    <div class="card-header">{{ $date }}</div>
+                    <div class="card-body">
+                        @foreach($activities as $activity)
+                            <div class="activity">
+                                <div class="col-auto p-0 pr-1 game-name">
+                                    <a href="#">{{ $activity->status->level->game->name }}</a>
+                                </div>
+                                <div class="status">{{ $activity->status->name }}</div>
+                                <div class="col-auto p-0 duration">{{ $activity->formattedDuration }}</div>
                             </div>
-                            <div class="col p-0 status-name">{{ $activity->status->name }}</div>
-                            <div class="col-auto p-0 duration">{{ $activity->formattedDuration }}</div>
-                        </div>
-                    @endforeach
-                </article>
+                        @endforeach
+                    </div>
+                </div>
             @endforeach
 @endsection
