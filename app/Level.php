@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Game $game
+ * @property-read string $formatted_duration
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Status[] $statuses
  * @property-read int|null $statuses_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Level newModelQuery()

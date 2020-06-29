@@ -3,6 +3,8 @@ $light-blue: #21d0db;
 $black: #000;
 $white: #fff;
 $dark-grey: #666;
+$green: #00ff00;
+$red: #ff0000;
 
 // Body
 $body-bg: $dark-grey;
@@ -15,6 +17,7 @@ $line-height-base: 1.1;
 
 // General
 $primary: $light-blue;
+$secondary: lighten($dark-grey, 25);
 $border-radius: 0;
 
 // Link
@@ -22,8 +25,9 @@ $link-color: $white;
 $link-hover-color: $light-blue;
 $link-hover-decoration: none;
 
-// Button
+// Form elements
 $btn-font-weight: bold;
+$input-font-weight: bold;
 
 // Card
 $card-bg: $dark-grey;
@@ -125,5 +129,39 @@ $card-spacer-y: 0.25rem;
 
     .card-body {
         padding: $card-spacer-y*4 $card-spacer-x;
+    }
+}
+
+.alert {
+    font-weight: bold;
+    text-align: center;
+}
+
+@keyframes highlight-fade {
+    from {
+        background-color: $light-blue;
+    }
+    to {
+        background-color: transparent;
+    }
+}
+
+.highlight {
+    animation: highlight-fade 4s ease-out;
+}
+
+.start {
+    color: $green !important;
+    font-weight: bold;
+}
+
+.stop {
+    color: $red !important;
+    font-weight: bold;
+}
+
+.col .form-inline button {
+    &.start, &.stop {
+        margin: 0 auto;
     }
 }

@@ -20,6 +20,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Activity[] $activities
  * @property-read int|null $activities_count
+ * @property-read string $formatted_duration
+ * @property-read bool $in_progress
+ * @property-read bool $is_ongoing
+ * @property-read string $name
  * @property-read \App\Level $level
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Status newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Status newQuery()
@@ -38,6 +42,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Status extends Model
 {
     use FormattedDuration;
+
+    public const ONGOING = 'ongoing';
+    public const FINISHED = 'finished';
+    public const DROPPED = 'dropped';
 
     protected $fillable = ['level_id', 'attempt', 'status'];
 
@@ -60,5 +68,20 @@ class Status extends Model
     public function getNameAttribute(): string
     {
         return __(':name - attempt :attempt', ['name' => $this->level->name, 'attempt' => $this->attempt]);
+    }
+
+    public function getIsOngoingAttribute(): bool
+    {
+        return $this->status === self::ONGOING;
+    }
+
+    public function getInProgressAttribute(): bool
+    {
+        return (bool)$this->activities()->inProgress()->count();
+    }
+
+    public function getInProgressActivityAttribute(): ?Activity
+    {
+        return $this->activities()->inProgress()->first();
     }
 }

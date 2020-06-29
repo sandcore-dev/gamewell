@@ -10,7 +10,7 @@
             @foreach($game->levels as $level)
                 <div class="game">
                     <div class="name">
-                        <a href="#">{{ $level->name }}</a>
+                        <a href="{{ route('levels.show', ['game' => $game, 'level' => $level]) }}">{{ $level->name }}</a>
                     </div>
                     <div class="col"></div>
                     <div class="duration">{{ $level->formattedDuration }}</div>

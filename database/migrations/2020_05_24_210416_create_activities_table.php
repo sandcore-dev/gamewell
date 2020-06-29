@@ -16,8 +16,8 @@ class CreateActivitiesTable extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('status_id');
-            $table->timestamp('started_at');
-            $table->timestamp('stopped_at')->nullable();
+            $table->dateTime('started_at')->useCurrent();
+            $table->dateTime('stopped_at')->nullable();
             $table->timestamps();
 
             $table->foreign('status_id')->references('id')->on('statuses');

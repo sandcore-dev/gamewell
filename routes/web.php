@@ -24,3 +24,20 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/{year}/{week}', 'HomeController@week')->name('week')->where(['year' => '\d{4}', 'week' => '\d+']);
 
 Route::resource('/games', 'GameController');
+
+Route::prefix('/games/{game}')->group(function () {
+    Route::resource('/levels', 'LevelController')->parameter('level', 'level:id');
+
+    Route::prefix('/levels/{level}')->group(function () {
+        Route::resource('/statuses', 'StatusController')->parameter('status', 'status:id');
+
+        Route::prefix('/statuses/{status}')->group(function () {
+            Route::resource('/activities', 'ActivityController')
+                ->parameter('activity', 'activity:id')
+                ->except(['index', 'create', 'show']);
+
+            Route::put('/activities/{activity:id}/stop', 'ActivityController@stop')
+                ->name('activities.stop');
+        });
+    });
+});

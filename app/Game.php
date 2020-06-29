@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $duration
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $formatted_duration
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Level[] $levels
  * @property-read int|null $levels_count
  * @property-read \App\User $user

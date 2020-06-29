@@ -17,7 +17,13 @@ use Illuminate\Support\Carbon;
  * @property \Illuminate\Support\Carbon|null $stopped_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $date
+ * @property-read string $formatted_date
+ * @property-read string $formatted_duration
+ * @property-read string $formatted_started_at
+ * @property-read string $formatted_stopped_at
  * @property-read \App\Status $status
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity inProgress()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity query()
@@ -71,6 +77,11 @@ class Activity extends Model
         return $query->whereBetween('started_at', [$date->startOfWeek(), $date->clone()->endOfWeek()]);
     }
 
+    public function scopeInProgress(Builder $query): Builder
+    {
+        return $query->whereNull('stopped_at');
+    }
+
     public function getDateAttribute(): string
     {
         return $this->started_at->format('Y-m-d');
@@ -81,8 +92,18 @@ class Activity extends Model
         return $this->started_at->isoFormat('dddd, MMMM D, YYYY');
     }
 
+    public function getFormattedStartedAtAttribute(): string
+    {
+        return $this->started_at->isoFormat('ddd DD MMM YYYY HH:mm:ss');
+    }
+
+    public function getFormattedStoppedAtAttribute(): string
+    {
+        return $this->stopped_at === null ? '' : $this->stopped_at->isoFormat('ddd DD MMM YYYY HH:mm:ss');
+    }
+
     public function getFormattedDurationAttribute(): string
     {
-        return $this->started_at->shortAbsoluteDiffForHumans($this->stopped_at);
+        return $this->stopped_at === null ? '' : $this->started_at->shortAbsoluteDiffForHumans($this->stopped_at, 3);
     }
 }
