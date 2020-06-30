@@ -6,7 +6,9 @@ use App\Game;
 use App\Level;
 use App\Status;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class StatusController extends Controller
 {
@@ -63,24 +65,44 @@ class StatusController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Status  $status
-     * @return \Illuminate\Http\Response
+     * @param Game $game
+     * @param Level $level
+     * @param \App\Status $status
+     * @return Renderable
      */
-    public function edit(Status $status)
+    public function edit(Game $game, Level $level, Status $status)
     {
-        //
+        return view('statuses.edit')->with([
+            'game' => $game,
+            'level' => $level,
+            'status' => $status,
+            'options' => [
+                'ongoing' => 'Ongoing',
+                'finished' => 'Finished',
+                'dropped' => 'Dropped',
+            ],
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Status  $status
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param Game $game
+     * @param Level $level
+     * @param \App\Status $status
+     * @return RedirectResponse
      */
-    public function update(Request $request, Status $status)
+    public function update(Request $request, Game $game, Level $level, Status $status)
     {
-        //
+        $request->validate([
+            'attempt' => ['required', 'numeric', 'min:1', Rule::unique('statuses', 'attempt')->ignore($status->id)->where('level_id', $status->level_id)],
+            'status' => ['required', 'string', 'in:ongoing,finished,dropped'],
+        ]);
+
+        $status->update($request->only('attempt', 'status'));
+
+        return redirect()->route('statuses.show', ['game' => $game, 'level' => $level, 'status' => $status]);
     }
 
     /**

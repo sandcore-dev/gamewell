@@ -121,6 +121,14 @@ $card-spacer-y: 0.25rem;
         font-size: 1.7rem;
         font-weight: bold;
 
+        a {
+            color: inherit;
+
+            &:hover {
+                color: $white;
+            }
+        }
+
         .duration {
             @extend .float-right;
             color: $white;
@@ -164,4 +172,27 @@ $card-spacer-y: 0.25rem;
     &.start, &.stop {
         margin: 0 auto;
     }
+}
+
+.btn-checkbox {
+    opacity: 0.5;
+
+    &.active {
+        opacity: 1.0;
+    }
+}
+
+.btn-ongoing {
+    @extend .btn-success;
+    @extend .btn-checkbox;
+}
+
+.btn-finished {
+    @extend .btn-dark;
+    @extend .btn-checkbox;
+}
+
+.btn-dropped {
+    @extend .btn-danger;
+    @extend .btn-checkbox;
 }

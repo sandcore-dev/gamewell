@@ -32,7 +32,9 @@
 
     <div class="card">
         <div class="card-header">
-            @lang('Attempt :attempt (:status)', ['attempt' => $status->attempt, 'status' => $status->status])
+            <a href="{{ route('statuses.edit', ['game' => $game, 'level' => $level, 'status' => $status]) }}">
+                @lang('Attempt :attempt (:status)', ['attempt' => $status->attempt, 'status' => $status->status])
+            </a>
             <span class="duration">{{ $status->formattedDuration }}</span>
         </div>
         <div class="card-body">

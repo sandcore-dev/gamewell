@@ -2,20 +2,20 @@
 
 @section('content')
     <div class="card">
-        <div class="card-header">@lang('Activity of :game', ['game' => $game->name])</div>
+        <div class="card-header">@lang('Status of :game', ['game' => $game->name])</div>
         <div class="card-header">{{ $status->name }}</div>
         <div class="card-body">
-            <form action="{{ route('activities.update', ['game' => $game, 'level' => $level, 'status' => $status, 'activity' => $activity]) }}" method="POST">
+            <form action="{{ route('statuses.update', ['game' => $game, 'level' => $level, 'status' => $status]) }}" method="POST">
                 @csrf
                 @method('PUT')
 
                 <div class="form-group row">
-                    <label for="started_at" class="col-md-4 col-form-label text-md-right">{{ __('Activity started at') }}</label>
+                    <label for="attempt" class="col-md-4 col-form-label text-md-right">{{ __('Attempt') }}</label>
 
                     <div class="col-md-6">
-                        <input id="started_at" type="text" class="form-control @error('started_at') is-invalid @enderror" name="started_at" value="{{ old('started_at', $activity->started_at) }}" required autocomplete="off" autofocus maxlength="19">
+                        <input id="attempt" type="number" class="form-control @error('attempt') is-invalid @enderror" name="attempt" value="{{ old('attempt', $status->attempt) }}" required autocomplete="off" autofocus min="1">
 
-                        @error('started_at')
+                        @error('attempt')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -24,12 +24,18 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="started_at" class="col-md-4 col-form-label text-md-right">{{ __('Activity stopped at') }}</label>
+                    <label class="col-md-4 col-form-label text-md-right">{{ __('Status') }}</label>
 
                     <div class="col-md-6">
-                        <input id="stopped_at" type="text" class="form-control @error('stopped_at') is-invalid @enderror" name="stopped_at" value="{{ old('stopped_at', $activity->stopped_at) }}" required autocomplete="off" maxlength="19">
+                        <div class="btn-group btn-group-toggle @error('status') is-invalid @enderror" data-toggle="buttons">
+                            @foreach ($options as $value => $label)
+                                <label class="btn btn-{{ $value }} @if(old('status', $status->status) === $value) active @endif">
+                                    <input type="radio" name="status" value="{{ $value }}" @if(old('status', $status->status) === $value) checked @endif> @lang($label)
+                                </label>
+                            @endforeach
+                        </div>
 
-                        @error('stopped_at')
+                        @error('status')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
