@@ -59,7 +59,6 @@
                                 <button class="btn btn-danger float-right" type="submit">@lang('Delete')</button>
                             </form>
                         @endif
-
                     </div>
                 </div>
             </form>

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Game;
+use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -83,6 +83,8 @@ class GameController extends Controller
      */
     public function edit(Game $game)
     {
+        $game->loadCount('levels');
+
         return view('games.edit')->with([
             'game' => $game,
         ]);
@@ -111,10 +113,13 @@ class GameController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Game $game
-     * @return Response
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(Game $game)
     {
-        //
+        $game->delete();
+
+        return redirect()->route('games.index');
     }
 }

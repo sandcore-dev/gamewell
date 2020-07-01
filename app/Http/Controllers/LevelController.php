@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Game;
 use App\Level;
+use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -72,6 +73,8 @@ class LevelController extends Controller
      */
     public function edit(Game $game, Level $level)
     {
+        $level->loadCount('statuses');
+
         return view('levels.edit')->with([
             'game' => $game,
             'level' => $level,
@@ -101,11 +104,15 @@ class LevelController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param Game $game
      * @param Level $level
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
+     * @throws Exception
      */
-    public function destroy(Level $level)
+    public function destroy(Game $game, Level $level)
     {
-        //
+        $level->delete();
+
+        return redirect()->route("games.show", ['game' => $game]);
     }
 }
