@@ -18,34 +18,37 @@ class StatusController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Game $game
+     * @param Level $level
+     * @return Renderable
      */
-    public function create()
+    public function create(Game $game, Level $level)
     {
-        //
+        return view('statuses.create')->with([
+            'game' => $game,
+            'level' => $level,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param Game $game
+     * @param Level $level
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request, Game $game, Level $level)
     {
-        //
+        $request->validate([
+            'attempt' => ['required', 'numeric', 'min:1', Rule::unique('statuses', 'attempt')->where('level_id', $level->id)],
+        ]);
+
+        $status = $level->statuses()->create($request->only('attempt'));
+
+        return redirect()->route('statuses.show', ['game' => $game, 'level' => $level, 'status' => $status]);
     }
 
     /**

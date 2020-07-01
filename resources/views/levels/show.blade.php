@@ -2,8 +2,11 @@
 
 @section('content')
     <nav class="nav">
-        <div class="col">
+        <div class="previous">
             <a href="{{ route('games.show', ['game' => $game]) }}">{{ $game->name }}</a>
+        </div>
+        <div class="next">
+            <a href="{{ route('statuses.create', ['game' => $game, 'level' => $level]) }}">Add status</a>
         </div>
     </nav>
     <div class="card">

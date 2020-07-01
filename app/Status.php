@@ -49,6 +49,10 @@ class Status extends Model
 
     protected $fillable = ['level_id', 'attempt', 'status'];
 
+    protected $attributes = [
+        'status' => self::ONGOING,
+    ];
+
     /**
      * @return BelongsTo|Level
      */
