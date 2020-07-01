@@ -50,6 +50,16 @@
                         </button>
 
                         <a class="btn btn-secondary" href="{{ route('statuses.show', ['game' => $game, 'level' => $level, 'status' => $status]) }}">@lang('Cancel')</a>
+
+                        @if(!$status->activities_count)
+                            <form class="form-inline" action="{{ route('statuses.destroy', ['game' => $game, 'level' => $level, 'status' => $status]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+
+                                <button class="btn btn-danger float-right" type="submit">@lang('Delete')</button>
+                            </form>
+                        @endif
+
                     </div>
                 </div>
             </form>

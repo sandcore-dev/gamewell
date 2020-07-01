@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Game;
 use App\Level;
 use App\Status;
+use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class StatusController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param Game $game
      * @param Level $level
      * @return RedirectResponse
@@ -56,7 +57,7 @@ class StatusController extends Controller
      *
      * @param Game $game
      * @param Level $level
-     * @param \App\Status $status
+     * @param Status $status
      * @return Renderable
      */
     public function show(Game $game, Level $level, Status $status)
@@ -75,11 +76,13 @@ class StatusController extends Controller
      *
      * @param Game $game
      * @param Level $level
-     * @param \App\Status $status
+     * @param Status $status
      * @return Renderable
      */
     public function edit(Game $game, Level $level, Status $status)
     {
+        $status->loadCount('activities');
+
         return view('statuses.edit')->with([
             'game' => $game,
             'level' => $level,
@@ -95,10 +98,10 @@ class StatusController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param Game $game
      * @param Level $level
-     * @param \App\Status $status
+     * @param Status $status
      * @return RedirectResponse
      */
     public function update(Request $request, Game $game, Level $level, Status $status)
@@ -116,11 +119,16 @@ class StatusController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Status  $status
-     * @return \Illuminate\Http\Response
+     * @param Game $game
+     * @param Level $level
+     * @param Status $status
+     * @return RedirectResponse
+     * @throws Exception
      */
-    public function destroy(Status $status)
+    public function destroy(Game $game, Level $level, Status $status)
     {
-        //
+        $status->delete();
+
+        return redirect()->route('levels.show', ['game' => $game, 'level' => $level]);
     }
 }
