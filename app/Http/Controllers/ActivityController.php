@@ -13,6 +13,11 @@ use Illuminate\Support\Carbon;
 
 class ActivityController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
