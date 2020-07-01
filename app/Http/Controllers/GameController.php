@@ -7,10 +7,16 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class GameController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -29,22 +35,33 @@ class GameController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return Renderable
      */
     public function create()
     {
-        //
+        return view('games.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Response
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        $request->merge([
+            'slug' => Str::slug($request->input('name')),
+        ]);
+
+        $request->validate([
+            'name' => ['required', 'string', 'unique:games,name'],
+            'slug' => ['required', 'string', 'unique:games,slug'],
+        ]);
+
+        $game = $request->user()->games()->create($request->only('name', 'slug'));
+
+        return redirect()->route('games.show', ['game' => $game]);
     }
 
     /**

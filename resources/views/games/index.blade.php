@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+    <nav class="nav">
+        <div class="col">
+            <a href="{{ route('games.create') }}">@lang('Add game')</a>
+        </div>
+    </nav>
+
     @foreach($groupedGames as $group => $games)
         <div class="card">
             <div class="card-header">{{ $group }}</div>
