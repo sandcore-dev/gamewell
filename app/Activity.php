@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\ActivityDeleted;
 use App\Events\ActivitySaved;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -47,6 +48,7 @@ class Activity extends Model
 
     protected $dispatchesEvents = [
         'saved' => ActivitySaved::class,
+        'deleted' => ActivityDeleted::class,
     ];
 
     protected static function booted()

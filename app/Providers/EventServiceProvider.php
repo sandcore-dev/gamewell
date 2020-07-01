@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\ActivityDeleted;
 use App\Events\ActivitySaved;
+use App\Listeners\StatusSubtractDuration;
 use App\Listeners\StatusUpdateDuration;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -21,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ActivitySaved::class => [
             StatusUpdateDuration::class,
+        ],
+        ActivityDeleted::class => [
+            StatusSubtractDuration::class,
         ],
     ];
 

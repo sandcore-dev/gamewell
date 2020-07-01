@@ -6,6 +6,7 @@ use App\Activity;
 use App\Game;
 use App\Level;
 use App\Status;
+use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -108,11 +109,17 @@ class ActivityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param Game $game
+     * @param Level $level
+     * @param Status $status
      * @param Activity $activity
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
+     * @throws Exception
      */
-    public function destroy(Activity $activity)
+    public function destroy(Game $game, Level $level, Status $status, Activity $activity)
     {
-        //
+        $activity->delete();
+
+        return redirect()->route('statuses.show', ['game' => $game, 'level' => $level, 'status' => $status]);
     }
 }

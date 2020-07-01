@@ -44,6 +44,15 @@
                         </button>
 
                         <a class="btn btn-secondary" href="{{ route('statuses.show', ['game' => $game, 'level' => $level, 'status' => $status]) }}">@lang('Cancel')</a>
+
+                        @if($activity->started_at->diffInHours() < 12)
+                            <form class="form-inline" action="{{ route('activities.destroy', ['game' => $game, 'level' => $level, 'status' => $status, 'activity' => $activity]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+
+                                <button class="btn btn-danger float-right" type="submit">@lang('Delete')</button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </form>

@@ -21,7 +21,7 @@
                         @foreach($activities as $activity)
                             <div class="game">
                                 <div class="name">
-                                    <a href="{{ route('games.show', ['game' => $activity->status->level->game]) }}">{{ $activity->status->level->game->name }}</a>
+                                    <a href="{{ route('statuses.show', ['game' => $activity->status->level->game, 'level' => $activity->status->level, 'status' => $activity->status]) }}">{{ $activity->status->level->game->name }}</a>
                                 </div>
                                 <div class="status">{{ $activity->status->name }}</div>
                                 <div class="duration">{{ $activity->formattedDuration }}</div>
