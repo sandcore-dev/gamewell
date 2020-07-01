@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Game;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class GameController extends Controller
 {
@@ -26,7 +29,7 @@ class GameController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -36,8 +39,8 @@ class GameController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -47,7 +50,7 @@ class GameController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Game  $game
+     * @param Game $game
      * @return Renderable
      */
     public function show(Game $game)
@@ -58,31 +61,40 @@ class GameController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Game  $game
-     * @return \Illuminate\Http\Response
+     * @param Game $game
+     * @return Renderable
      */
     public function edit(Game $game)
     {
-        //
+        return view('games.edit')->with([
+            'game' => $game,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Game  $game
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Game $game
+     * @return RedirectResponse
      */
     public function update(Request $request, Game $game)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', Rule::unique('games', 'name')->ignoreModel($game)],
+            'slug' => ['required', 'string', Rule::unique('games', 'slug')->ignoreModel($game)],
+        ]);
+
+        $game->update($request->only('name', 'slug'));
+
+        return redirect()->route('games.show', ['game' => $game]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Game  $game
-     * @return \Illuminate\Http\Response
+     * @param Game $game
+     * @return Response
      */
     public function destroy(Game $game)
     {

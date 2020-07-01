@@ -3,7 +3,9 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            {{ $game->name }}
+            <a href="{{ route('games.edit', ['game' => $game]) }}">
+                {{ $game->name }}
+            </a>
             <span class="duration">{{ $game->formattedDuration }}</span>
         </div>
         <div class="card-body">
