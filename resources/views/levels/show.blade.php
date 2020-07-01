@@ -8,10 +8,13 @@
     </nav>
     <div class="card">
         <div class="card-header">
-            {{ $level->name }}
+            <a href="{{ route('levels.edit', ['game' => $game, 'level' => $level]) }}">
+                {{ $level->name }}
+            </a>
             <span class="duration">{{ $level->formattedDuration }}</span>
         </div>
         <div class="card-body">
+
             @foreach($level->statuses as $status)
                 <div class="game">
                     <div class="name">
@@ -21,6 +24,7 @@
                     <div class="duration">{{ $status->formattedDuration }}</div>
                 </div>
             @endforeach
+
         </div>
     </div>
 @endsection

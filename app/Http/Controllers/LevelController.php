@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Game;
 use App\Level;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class LevelController extends Controller
 {
@@ -32,7 +34,7 @@ class LevelController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -58,24 +60,36 @@ class LevelController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+     * @param Game $game
      * @param Level $level
-     * @return \Illuminate\Http\Response
+     * @return Renderable
      */
-    public function edit(Level $level)
+    public function edit(Game $game, Level $level)
     {
-        //
+        return view('levels.edit')->with([
+            'game' => $game,
+            'level' => $level,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
+     * @param Game $game
      * @param Level $level
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function update(Request $request, Level $level)
+    public function update(Request $request, Game $game, Level $level)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', Rule::unique('levels', 'name')->ignore($level->id)->where('game_id', $level->game_id)],
+            'order' => ['required', 'numeric', 'min:0', 'max:255'],
+        ]);
+
+        $level->update($request->only('name', 'order'));
+
+        return redirect()->route('levels.show', ['game' => $game, 'level' => $level]);
     }
 
     /**
