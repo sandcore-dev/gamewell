@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    <nav class="nav">
+        <div class="col">
+            <a href="{{ route('levels.create', ['game' => $game]) }}">@lang('Add level')</a>
+        </div>
+    </nav>
     <div class="card">
         <div class="card-header">
             <a href="{{ route('games.edit', ['game' => $game]) }}">

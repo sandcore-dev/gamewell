@@ -17,34 +17,35 @@ class LevelController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Game $game
+     * @return Renderable
      */
-    public function create()
+    public function create(Game $game)
     {
-        //
+        return view('levels.create')->with([
+            'game' => $game,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @param Game $game
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request, Game $game)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', Rule::unique('levels', 'name')->where('game_id', $game->id)],
+            'order' => ['required', 'numeric', 'min:0', 'max:255'],
+        ]);
+
+        $level = $game->levels()->create($request->only('name', 'order'));
+
+        return redirect()->route('levels.show', ['game' => $game, 'level' => $level]);
     }
 
     /**
