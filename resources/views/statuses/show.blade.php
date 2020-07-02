@@ -45,9 +45,19 @@
                         <a href="{{ route('activities.edit', ['game' => $game, 'level' => $level, 'status' => $status, 'activity' => $activity]) }}">{{ $activity->formattedStartedAt }}</a>
                     </div>
                     <div class="stopped-at">
-                        <a href="{{ route('activities.edit', ['game' => $game, 'level' => $level, 'status' => $status, 'activity' => $activity]) }}">{{ $activity->formattedStoppedAt }}</a>
+                        @if($activity->stopped_at)
+                            <a href="{{ route('activities.edit', ['game' => $game, 'level' => $level, 'status' => $status, 'activity' => $activity]) }}">{{ $activity->formattedStoppedAt }}</a>
+                        @else
+                            <now format="{{ $activity::DATETIME_FORMAT }}"></now>
+                        @endif
                     </div>
-                    <div class="duration">{{ $activity->formattedDuration }}</div>
+                    <div class="duration">
+                        @if($activity->stopped_at)
+                            {{ $activity->formattedDuration }}
+                        @else
+                            <duration start-time="{{ $activity->started_at }}"></duration>
+                        @endif
+                    </div>
                 </div>
             @endforeach
 

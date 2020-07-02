@@ -42,6 +42,9 @@ use Illuminate\Support\Carbon;
  */
 class Activity extends Model
 {
+    const DATE_FORMAT = 'dddd, MMMM D, YYYY';
+    const DATETIME_FORMAT = 'ddd DD MMM YYYY HH:mm:ss';
+
     protected $fillable = ['status_id', 'started_at', 'stopped_at'];
 
     protected $dates = ['started_at', 'stopped_at'];
@@ -91,17 +94,17 @@ class Activity extends Model
 
     public function getFormattedDateAttribute(): string
     {
-        return $this->started_at->isoFormat('dddd, MMMM D, YYYY');
+        return $this->started_at->isoFormat(self::DATE_FORMAT);
     }
 
     public function getFormattedStartedAtAttribute(): string
     {
-        return $this->started_at->isoFormat('ddd DD MMM YYYY HH:mm:ss');
+        return $this->started_at->isoFormat(self::DATETIME_FORMAT);
     }
 
     public function getFormattedStoppedAtAttribute(): string
     {
-        return $this->stopped_at === null ? '' : $this->stopped_at->isoFormat('ddd DD MMM YYYY HH:mm:ss');
+        return $this->stopped_at === null ? '' : $this->stopped_at->isoFormat(self::DATETIME_FORMAT);
     }
 
     public function getFormattedDurationAttribute(): string
