@@ -4,12 +4,12 @@
             <nav class="nav">
                 @if($beforeYear && $beforeWeek)
                     <div class="previous">
-                        <a href="{{ route('week', ['year' => $beforeYear, 'week' => $beforeWeek]) }}">&laquo; @lang('Week :week, :year', ['year' => $beforeYear, 'week' => $beforeWeek])</a>
+                        <a href="{{ route('week', ['year' => $beforeYear, 'week' => $beforeWeek]) }}">@lang('Week :week, :year', ['year' => $beforeYear, 'week' => $beforeWeek]) <span class="caret-left">&laquo;</span></a>
                     </div>
                 @endif
                 @if($afterYear && $afterWeek)
                     <div class="next">
-                        <a href="{{ route('week', ['year' => $afterYear, 'week' => $afterWeek]) }}">@lang('Week :week, :year', ['year' => $afterYear, 'week' => $afterWeek]) &raquo;</a>
+                        <a href="{{ route('week', ['year' => $afterYear, 'week' => $afterWeek]) }}">@lang('Week :week, :year', ['year' => $afterYear, 'week' => $afterWeek]) <span class="caret-right">&raquo;</span></a>
                     </div>
                 @endif
             </nav>

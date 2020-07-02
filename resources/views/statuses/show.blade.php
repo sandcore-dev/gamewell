@@ -40,14 +40,13 @@
         <div class="card-body">
 
             @foreach($status->activities as $activity)
-                <div class="game @if($updated_activity_id === $activity->id) highlight @endif">
-                    <div class="col-5">
+                <div class="activity @if($updated_activity_id === $activity->id) highlight @endif">
+                    <div class="started-at">
                         <a href="{{ route('activities.edit', ['game' => $game, 'level' => $level, 'status' => $status, 'activity' => $activity]) }}">{{ $activity->formattedStartedAt }}</a>
                     </div>
-                    <div class="col-5">
+                    <div class="stopped-at">
                         <a href="{{ route('activities.edit', ['game' => $game, 'level' => $level, 'status' => $status, 'activity' => $activity]) }}">{{ $activity->formattedStoppedAt }}</a>
                     </div>
-                    <div class="col"></div>
                     <div class="duration">{{ $activity->formattedDuration }}</div>
                 </div>
             @endforeach

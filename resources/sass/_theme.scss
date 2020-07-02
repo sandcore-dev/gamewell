@@ -65,10 +65,11 @@ $card-spacer-y: 0.25rem;
     }
 }
 
-.logout {
+form.logout {
     @extend .form-inline;
 
     label {
+        @extend .ml-auto;
         cursor: pointer;
 
         &:hover {
@@ -95,24 +96,51 @@ $card-spacer-y: 0.25rem;
     }
 
     .status {
+        @extend .d-none;
+        @extend .d-sm-flex;
         @extend .col;
         @extend .p-0;
 
         color: $light-blue;
         font-weight: bold;
+    }
 
-        &:before {
-            content: '(';
-        }
+    .started-at {
+        @extend .col-12;
+        @extend .col-sm-5;
+    }
 
-        &:after {
-            content: ')';
-        }
+    .stopped-at {
+        @extend .col-12;
+        @extend .col-sm-5;
     }
 
     .duration {
-        @extend .col-auto;
+        @extend .col;
+        @extend .col-sm-2;
         @extend .p-0;
+        @extend .text-right;
+    }
+}
+
+.activity {
+    @extend .game;
+
+    .started-at {
+        @extend .col-12;
+        @extend .col-sm-5;
+    }
+
+    .stopped-at {
+        @extend .col-12;
+        @extend .col-sm-5;
+    }
+
+    .duration {
+        @extend .col-12;
+        @extend .col-sm-2;
+        @extend .mb-2;
+        @extend .text-right;
     }
 }
 
@@ -195,4 +223,18 @@ $card-spacer-y: 0.25rem;
 .btn-dropped {
     @extend .btn-danger;
     @extend .btn-checkbox;
+}
+
+.caret-left {
+    @extend .d-block;
+    @extend .d-sm-inline-block;
+    @extend .float-sm-left;
+    @extend .mr-2;
+}
+
+.caret-right {
+    @extend .d-block;
+    @extend .d-sm-inline-block;
+    @extend .float-sm-right;
+    @extend .ml-2;
 }

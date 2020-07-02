@@ -21,26 +21,16 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-10">
-                        <nav class="navbar navbar-expand-md px-0">
-                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-
-                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                <ul class="navbar-nav mr-auto">
-                                    <li>
-                                        <a class="nav-link" href="{{ route('games.index') }}">@lang('Games')</a>
-                                    </li>
-                                </ul>
-                                <ul class="navbar-nav ml-auto">
-                                    <li class="nav-item">
-                                        <form class="logout" action="{{ route('logout') }}" method="post">
-                                            @csrf
-                                            <label for="logout">@lang('Logout')</label>
-                                            <button type="submit" id="logout">@lang('Logout')</button>
-                                        </form>
-                                    </li>
-                                </ul>
+                        <nav class="nav mt-2">
+                            <div class="previous">
+                                <a href="{{ route('games.index') }}">@lang('Games')</a>
+                            </div>
+                            <div class="next">
+                                <form class="logout" action="{{ route('logout') }}" method="post">
+                                    @csrf
+                                    <label for="logout">@lang('Logout')</label>
+                                    <button type="submit" id="logout">@lang('Logout')</button>
+                                </form>
                             </div>
                         </nav>
 
