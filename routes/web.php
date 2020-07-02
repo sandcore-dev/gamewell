@@ -20,16 +20,24 @@ Auth::routes([
     'verify' => false,
 ]);
 
-Route::get('/', 'HomeController@index')->name('home');
-Route::get('/{year}/{week}', 'HomeController@week')->name('week')->where(['year' => '\d{4}', 'week' => '\d+']);
+Route::get('/', 'HomeController@index')
+    ->name('home');
+
+Route::get('/{year}/{week}', 'HomeController@week')
+    ->name('week')
+    ->where(['year' => '\d{4}', 'week' => '\d+']);
 
 Route::resource('/games', 'GameController');
 
 Route::prefix('/games/{game}')->group(function () {
-    Route::resource('/levels', 'LevelController')->parameter('level', 'level:id');
+    Route::resource('/levels', 'LevelController')
+        ->parameter('level', 'level:id')
+        ->except(['index']);
 
     Route::prefix('/levels/{level}')->group(function () {
-        Route::resource('/statuses', 'StatusController')->parameter('status', 'status:id');
+        Route::resource('/statuses', 'StatusController')
+            ->parameter('status', 'status:id')
+            ->except(['index']);
 
         Route::prefix('/statuses/{status}')->group(function () {
             Route::resource('/activities', 'ActivityController')
