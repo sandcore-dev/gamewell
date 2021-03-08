@@ -19,23 +19,24 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $duration
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Activity[] $activities
+ * @property-read Collection|\App\Activity[] $activities
  * @property-read int|null $activities_count
  * @property-read string $formatted_duration
+ * @property-read \App\Activity|null $in_progress_activity
  * @property-read bool $in_progress
  * @property-read bool $is_ongoing
  * @property-read string $name
  * @property-read \App\Level $level
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Status newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Status newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Status query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Status whereAttempt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Status whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Status whereDuration($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Status whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Status whereLevelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Status whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Status whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Status newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Status query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereAttempt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereDuration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereLevelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereUpdatedAt($value)
  * @mixin \Eloquent
  * @noinspection PhpFullyQualifiedNameUsageInspection
  * @noinspection PhpUnnecessaryFullyQualifiedNameInspection

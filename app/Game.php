@@ -23,16 +23,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Level[] $levels
  * @property-read int|null $levels_count
  * @property-read \App\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Game newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Game newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Game query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Game whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Game whereDuration($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Game whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Game whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Game whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Game whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Game whereUserId($value)
+ * @method static Builder|Game newModelQuery()
+ * @method static Builder|Game newQuery()
+ * @method static Builder|Game query()
+ * @method static Builder|Game whereCreatedAt($value)
+ * @method static Builder|Game whereDuration($value)
+ * @method static Builder|Game whereId($value)
+ * @method static Builder|Game whereName($value)
+ * @method static Builder|Game whereSlug($value)
+ * @method static Builder|Game whereUpdatedAt($value)
+ * @method static Builder|Game whereUserId($value)
  * @mixin \Eloquent
  * @noinspection PhpFullyQualifiedNameUsageInspection
  * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
