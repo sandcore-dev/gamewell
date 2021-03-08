@@ -5,6 +5,7 @@ namespace App;
 use App\Events\ActivityDeleted;
 use App\Events\ActivitySaved;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -42,6 +43,8 @@ use Illuminate\Support\Carbon;
  */
 class Activity extends Model
 {
+    use HasFactory;
+
     const DATE_FORMAT = 'dddd, MMMM D, YYYY';
     const DATETIME_FORMAT = 'ddd DD MMM YYYY HH:mm:ss';
 

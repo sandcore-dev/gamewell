@@ -4,6 +4,7 @@ namespace App;
 
 use App\Traits\FormattedDuration;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -41,6 +42,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Status extends Model
 {
+    use HasFactory;
     use FormattedDuration;
 
     public const ONGOING = 'ongoing';
@@ -62,7 +64,7 @@ class Status extends Model
     }
 
     /**
-     * @return HasMany|Collection|Activity[]
+     * @return HasMany|Collection|Activity[]|Activity
      */
     public function activities(): HasMany
     {

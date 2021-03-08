@@ -1,15 +1,21 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Level;
 use App\Status;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Status::class, function (Faker $faker, array $attributes) {
-    return [
-        'level_id' => $attributes['level_id'] ?? factory(Level::class)->create()->id,
-        'attempt' => $faker->unique()->numberBetween(1, 255),
-        'status' => $faker->randomElement(['ongoing', 'finished', 'dropped']),
-    ];
-});
+class StatusFactory extends Factory
+{
+    protected $model = Status::class;
+
+    public function definition(): array
+    {
+        return [
+            'level_id' => Level::factory(),
+            'attempt' => $this->faker->unique()->numberBetween(1, 255),
+            'status' => $this->faker->randomElement(['ongoing', 'finished', 'dropped']),
+        ];
+    }
+}

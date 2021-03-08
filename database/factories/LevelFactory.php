@@ -1,15 +1,21 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Game;
 use App\Level;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Level::class, function (Faker $faker, array $attributes) {
-    return [
-        'game_id' => $attributes['game_id'] ?? factory(Game::class)->create()->id,
-        'name' => $faker->unique()->catchPhrase,
-        'order' => $faker->numberBetween(0, 255),
-    ];
-});
+class LevelFactory extends Factory
+{
+    protected $model = Level::class;
+
+    public function definition(): array
+    {
+        return [
+            'game_id' => Game::factory(),
+            'name' => $this->faker->unique()->catchPhrase,
+            'order' => $this->faker->numberBetween(0, 255),
+        ];
+    }
+}

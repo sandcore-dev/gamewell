@@ -1,16 +1,25 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Activity;
 use App\Status;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
-$factory->define(Activity::class, function (Faker $faker, array $attributes) {
-    $startedAt = $faker->dateTime;
-    return [
-        'status_id' => $attributes['status_id'] ?? factory(Status::class)->create()->id,
-        'started_at' => $startedAt,
-        'stopped_at' => $faker->dateTimeInInterval($startedAt, '+5 hours'),
-    ];
-});
+class ActivityFactory extends Factory
+{
+    protected $model = Activity::class;
+
+    public function definition(): array
+    {
+        return [
+            'status_id' => Status::factory(),
+            'started_at' => $this->faker->dateTime,
+            'stopped_at' => function (array $attributes) {
+                return (new Carbon($attributes['started_at']))
+                    ->addHours($this->faker->numberBetween(1, 5));
+            },
+        ];
+    }
+}

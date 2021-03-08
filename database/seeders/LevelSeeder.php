@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Game;
 use App\Level;
 use Illuminate\Database\Seeder;
@@ -19,10 +21,14 @@ class LevelSeeder extends Seeder
 
         $games = Game::all();
 
-        foreach ($games as $game) {
-            factory(Level::class, rand(1, 3))->create([
-                'game_id' => $game->id,
-            ]);
-        }
+        Level::factory()
+            ->times($games->count() * 3)
+            ->create(
+                [
+                    'game_id' => function () use ($games) {
+                        return $games->random();
+                    },
+                ]
+            );
     }
 }

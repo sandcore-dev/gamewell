@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Activity;
 use App\Status;
 use Illuminate\Database\Seeder;
@@ -19,10 +21,14 @@ class ActivitySeeder extends Seeder
 
         $statuses = Status::all();
 
-        foreach ($statuses as $status) {
-            factory(Activity::class, rand(3, 15))->create([
-                'status_id' => $status->id,
-            ]);
-        }
+        Activity::factory()
+            ->times(100)
+            ->create(
+                [
+                    'status_id' => function () use ($statuses) {
+                        return $statuses->random();
+                    },
+                ]
+            );
     }
 }
