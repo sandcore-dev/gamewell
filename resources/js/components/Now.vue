@@ -3,28 +3,28 @@
 </template>
 
 <script>
-    import moment from 'moment';
+import moment from 'moment';
 
-    export default {
-        props: [
-            'format'
-        ],
+export default {
+    props: [
+        'format',
+    ],
 
-        data() {
-            return {
-                timestamp: ''
-            };
+    data() {
+        return {
+            timestamp: '',
+        };
+    },
+
+    mounted() {
+        this.setTimestamp();
+        setInterval(this.setTimestamp, 1000);
+    },
+
+    methods: {
+        setTimestamp() {
+            this.timestamp = moment().format(this.format);
         },
-
-        mounted() {
-            this.setTimestamp();
-            setInterval(this.setTimestamp, 1000);
-        },
-
-        methods: {
-            setTimestamp() {
-                this.timestamp = moment().format(this.format);
-            }
-        }
-    }
+    },
+};
 </script>
