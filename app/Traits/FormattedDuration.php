@@ -12,6 +12,8 @@ trait FormattedDuration
 {
     public function getFormattedDurationAttribute(): string
     {
-        return CarbonInterval::seconds($this->duration)->cascade()->forHumans(CarbonInterface::DIFF_ABSOLUTE, true);
+        return CarbonInterval::seconds($this->duration)
+            ->cascade()
+            ->forHumans(CarbonInterface::DIFF_ABSOLUTE, true, 3);
     }
 }
