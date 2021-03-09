@@ -47,6 +47,7 @@ class Activity extends Model
 
     const DATE_FORMAT = 'dddd, MMMM D, YYYY';
     const DATETIME_FORMAT = 'ddd DD MMM YYYY HH:mm:ss';
+    const LUXON_DATETIME_FORMAT = 'ccc dd MMM yyyy HH:mm:ss';
 
     protected $fillable = ['status_id', 'started_at', 'stopped_at'];
 

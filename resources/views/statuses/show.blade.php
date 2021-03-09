@@ -48,7 +48,7 @@
                         @if($activity->stopped_at)
                             <a href="{{ route('activities.edit', ['game' => $game, 'level' => $level, 'status' => $status, 'activity' => $activity]) }}">{{ $activity->formattedStoppedAt }}</a>
                         @else
-                            <now format="{{ $activity::DATETIME_FORMAT }}"></now>
+                            <now format="{{ $activity::LUXON_DATETIME_FORMAT }}"></now>
                         @endif
                     </div>
                     <div class="duration">

@@ -3,8 +3,7 @@
 </template>
 
 <script>
-import moment from 'moment';
-import 'moment-precise-range-plugin';
+import { DateTime } from 'luxon';
 
 export default {
     props: [
@@ -24,7 +23,10 @@ export default {
 
     methods: {
         setDuration() {
-            const diff = moment.preciseDiff(new Date(), this.startTime, true);
+            const diff = DateTime.now().diff(
+                DateTime.fromSQL(this.startTime),
+                ['years', 'months', 'days', 'hours', 'minutes', 'seconds', 'milliseconds'],
+            );
             this.duration = (diff.years ? `${diff.years}y ` : '')
                     + (diff.months ? `${diff.months}mn ` : '')
                     + (diff.days ? `${diff.days}d ` : '')

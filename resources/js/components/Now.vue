@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 export default {
     props: [
@@ -23,7 +23,7 @@ export default {
 
     methods: {
         setTimestamp() {
-            this.timestamp = moment().format(this.format);
+            this.timestamp = DateTime.now().toFormat(this.format);
         },
     },
 };
