@@ -24,6 +24,7 @@ use Illuminate\Support\Carbon;
  * @property-read string $formatted_duration
  * @property-read string $formatted_started_at
  * @property-read string $formatted_stopped_at
+ * @property-read string $luxon_date_time_format
  * @property-read \App\Status $status
  * @method static Builder|Activity inProgress()
  * @method static Builder|Activity newModelQuery()
@@ -114,5 +115,10 @@ class Activity extends Model
     public function getFormattedDurationAttribute(): string
     {
         return $this->stopped_at === null ? '' : $this->started_at->shortAbsoluteDiffForHumans($this->stopped_at, 3);
+    }
+
+    public function getLuxonDateTimeFormatAttribute(): string
+    {
+        return static::LUXON_DATETIME_FORMAT;
     }
 }
