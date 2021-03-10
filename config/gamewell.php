@@ -2,6 +2,7 @@
 
 return [
     'header' => [
-        'image' => 'storage/logo.png',
+        'favicon' => env('APP_ICON', 'storage/favicon.ico'),
+        'image' => env('APP_HEADER_IMAGE', 'storage/logo.png'),
     ],
 ];
