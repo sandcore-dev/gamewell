@@ -46,16 +46,17 @@
                         <a class="btn btn-secondary" href="{{ route('statuses.show', ['game' => $game, 'level' => $level, 'status' => $status]) }}">@lang('Cancel')</a>
 
                         @if($activity->started_at->diffInHours() < 12)
-                            <form class="form-inline" action="{{ route('activities.destroy', ['game' => $game, 'level' => $level, 'status' => $status, 'activity' => $activity]) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-
-                                <button class="btn btn-danger float-right" type="submit">@lang('Delete')</button>
-                            </form>
+                            <button form="delete_activity" class="btn btn-danger float-right" type="submit">@lang('Delete')</button>
                         @endif
                     </div>
                 </div>
             </form>
+            @if($activity->started_at->diffInHours() < 12)
+                <form id="delete_activity" class="form-inline" action="{{ route('activities.destroy', ['game' => $game, 'level' => $level, 'status' => $status, 'activity' => $activity]) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            @endif
         </div>
     </div>
 @endsection
