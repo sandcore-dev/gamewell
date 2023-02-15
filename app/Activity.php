@@ -50,26 +50,30 @@ class Activity extends Model
     const DATETIME_FORMAT = 'ddd DD MMM YYYY HH:mm:ss';
     const LUXON_DATETIME_FORMAT = 'ccc dd MMM yyyy HH:mm:ss';
 
-    protected $fillable = ['status_id', 'started_at', 'stopped_at'];
+    protected $fillable = [
+        'status_id',
+        'started_at',
+        'stopped_at',
+    ];
 
-    protected $dates = ['started_at', 'stopped_at'];
+    protected $casts = [
+        'started_at' => 'datetime',
+        'stopped_at' => 'datetime',
+    ];
 
     protected $dispatchesEvents = [
         'saved' => ActivitySaved::class,
         'deleted' => ActivityDeleted::class,
     ];
 
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope('startedAt', function (Builder $query) {
             return $query->orderBy('started_at');
         });
     }
 
-    /**
-     * @return BelongsTo|Status
-     */
-    public function status(): BelongsTo
+    public function status(): BelongsTo|Status
     {
         return $this->belongsTo(Status::class);
     }
