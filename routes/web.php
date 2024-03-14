@@ -1,51 +1,62 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\GameController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LevelController;
+use App\Http\Controllers\StatusController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Auth::routes(
+    [
+        'register' => false,
+        'reset' => false,
+        'confirm' => false,
+        'verify' => false,
+    ]
+);
 
-Auth::routes([
-    'register' => false,
-    'reset' => false,
-    'confirm' => false,
-    'verify' => false,
-]);
-
-Route::get('/', 'HomeController@index')
+Route::get('/', [HomeController::class, 'index'])
     ->name('home');
 
-Route::get('/{year}/{week}', 'HomeController@week')
+Route::get('/{year}/{week}', [HomeController::class, 'week'])
     ->name('week')
-    ->where(['year' => '\d{4}', 'week' => '\d+']);
+    ->where(
+        [
+            'year' => '\d{4}',
+            'week' => '\d+',
+        ]
+    );
 
-Route::resource('/games', 'GameController');
+Route::resource('/games', GameController::class);
 
-Route::prefix('/games/{game}')->group(function () {
-    Route::resource('/levels', 'LevelController')
-        ->parameter('level', 'level:id')
-        ->except(['index']);
+Route::prefix('/games/{game}')
+    ->group(
+        function () {
+            Route::resource('/levels', LevelController::class)
+                ->parameter('level', 'level:id')
+                ->except(['index']);
 
-    Route::prefix('/levels/{level}')->group(function () {
-        Route::resource('/statuses', 'StatusController')
-            ->parameter('status', 'status:id')
-            ->except(['index']);
+            Route::prefix('/levels/{level}')
+                ->group(
+                    function () {
+                        Route::resource('/statuses', StatusController::class)
+                            ->parameter('status', 'status:id')
+                            ->except(['index']);
 
-        Route::prefix('/statuses/{status}')->group(function () {
-            Route::resource('/activities', 'ActivityController')
-                ->parameter('activity', 'activity:id')
-                ->except(['index', 'create', 'show']);
+                        Route::prefix('/statuses/{status}')
+                            ->group(
+                                function () {
+                                    Route::resource('/activities', ActivityController::class)
+                                        ->parameter('activity', 'activity:id')
+                                        ->except(['index', 'create', 'show']);
 
-            Route::put('/activities/{activity:id}/stop', 'ActivityController@stop')
-                ->name('activities.stop');
-        });
-    });
-});
+                                    Route::put('/activities/{activity:id}/stop', [ActivityController::class, 'stop'])
+                                        ->name('activities.stop');
+                                }
+                            );
+                    }
+                );
+        }
+    );
