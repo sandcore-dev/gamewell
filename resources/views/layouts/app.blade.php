@@ -10,9 +10,7 @@
 
     <link rel="shortcut icon" href="{{ asset(config('gamewell.header.favicon')) }}">
 
-    <script src="{{ mix('js/app.js') }}" defer></script>
-
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
     <div id="app">
