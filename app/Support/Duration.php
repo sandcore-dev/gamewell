@@ -7,9 +7,15 @@ use Illuminate\Support\Carbon;
 
 class Duration
 {
-    public static function update(Activity $activity): void
+    public static function update(Activity $activity, bool $force = false): void
     {
-        if ($activity->isClean(['started_at', 'stopped_at']) || $activity->stopped_at === null) {
+        if (
+            $activity->stopped_at === null
+            || (
+                $activity->isClean(['started_at', 'stopped_at'])
+                && !$force
+            )
+        ) {
             return;
         }
 
