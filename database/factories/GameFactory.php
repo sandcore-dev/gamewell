@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Game;
-use App\User;
+use App\Models\Game;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 

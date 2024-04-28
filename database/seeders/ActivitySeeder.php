@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Activity;
-use App\Status;
+use App\Models\Activity;
+use App\Models\Status;
 use Illuminate\Database\Seeder;
 
 class ActivitySeeder extends Seeder

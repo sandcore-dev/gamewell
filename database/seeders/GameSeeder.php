@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Game;
-use App\User;
+use App\Models\Game;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class GameSeeder extends Seeder

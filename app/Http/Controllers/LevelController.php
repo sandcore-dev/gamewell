@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Game;
-use App\Level;
+use App\Models\Game;
+use App\Models\Level;
 use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;

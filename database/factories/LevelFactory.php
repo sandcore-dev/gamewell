@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Game;
-use App\Level;
+use App\Models\Game;
+use App\Models\Level;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LevelFactory extends Factory

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Game;
-use App\Level;
-use App\Status;
+use App\Models\Game;
+use App\Models\Level;
+use App\Models\Status;
 use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;

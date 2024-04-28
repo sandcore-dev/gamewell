@@ -1,9 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Events\ActivityDeleted;
 use App\Events\ActivitySaved;
+use App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,36 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
- * App\Activity
- *
- * @property int $id
- * @property int $status_id
- * @property Carbon $started_at
- * @property Carbon|null $stopped_at
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property-read string $date
- * @property-read string $formatted_date
- * @property-read string $formatted_duration
- * @property-read string $formatted_started_at
- * @property-read string $formatted_stopped_at
- * @property-read string $luxon_date_time_format
- * @property-read \App\Status $status
- * @method static Builder|Activity inProgress()
- * @method static Builder|Activity newModelQuery()
- * @method static Builder|Activity newQuery()
- * @method static Builder|Activity query()
- * @method static Builder|Activity user(\App\User $user)
- * @method static Builder|Activity whereCreatedAt($value)
- * @method static Builder|Activity whereId($value)
- * @method static Builder|Activity whereStartedAt($value)
- * @method static Builder|Activity whereStatusId($value)
- * @method static Builder|Activity whereStoppedAt($value)
- * @method static Builder|Activity whereUpdatedAt($value)
- * @method static Builder|Activity yearWeek(int $year, int $week)
- * @mixin \Eloquent
- * @noinspection PhpFullyQualifiedNameUsageInspection
- * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
+ * @mixin IdeHelperActivity
  */
 class Activity extends Model
 {
