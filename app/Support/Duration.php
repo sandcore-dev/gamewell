@@ -3,10 +3,40 @@
 namespace App\Support;
 
 use App\Models\Activity;
+use App\Models\Game;
+use App\Models\Level;
+use App\Models\Status;
 use Illuminate\Support\Carbon;
 
 class Duration
 {
+    public static function reset(Game $game): void
+    {
+        $game->duration = 0;
+        $game->save();
+
+        $game->levels()->update(['duration' => 0]);
+        $game->levels->each(function (Level $level) {
+            $level->statuses()->update(['duration' => 0]);
+        });
+    }
+
+    public static function recalculate(Game $game): void
+    {
+        self::reset($game);
+
+        $game->levels->each(function (Level $level) {
+            $level->statuses->each(function (Status $status) {
+                $status->activities->each(function (Activity $activity) {
+                    self::update(
+                        activity: $activity,
+                        force:    true
+                    );
+                });
+            });
+        });
+    }
+
     public static function update(Activity $activity, bool $force = false): void
     {
         if (
