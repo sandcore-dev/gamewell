@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace App\Concerns;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonInterval;
