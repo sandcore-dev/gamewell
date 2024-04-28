@@ -20,7 +20,7 @@ class StatusUpdateDuration
             return;
         }
 
-        $duration = $activity->stopped_at->diffInSeconds($activity->started_at);
+        $duration = $activity->stopped_at->diffInSeconds($activity->started_at, true);
 
         $orgStartedAt = $activity->getOriginal('started_at');
         $orgStoppedAt = $activity->getOriginal('stopped_at');
