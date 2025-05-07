@@ -4,18 +4,18 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StatusController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 
-Auth::routes(
-    [
-        'register' => false,
-        'reset' => false,
-        'confirm' => false,
-        'verify' => false,
-    ]
-);
+Route::get('/login', [AuthController::class, 'showLoginForm'])
+    ->name('login');
+
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.attempt');
+
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
 
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');

@@ -73,9 +73,9 @@ class Activity extends Model
         return $this->started_at->format('Y-m-d');
     }
 
-    public function getFormattedDateAttribute(): string
+    public function getFormattedDateAttribute(): ?string
     {
-        return $this->started_at->isoFormat(self::DATE_FORMAT);
+        return $this->started_at?->isoFormat(self::DATE_FORMAT);
     }
 
     public function getFormattedStartedAtAttribute(): string
@@ -90,7 +90,9 @@ class Activity extends Model
 
     public function getFormattedDurationAttribute(): string
     {
-        return $this->stopped_at === null ? '' : $this->started_at->shortAbsoluteDiffForHumans($this->stopped_at, 3);
+        return $this->stopped_at === null
+            ? ''
+            : $this->started_at->shortAbsoluteDiffForHumans($this->stopped_at, 3);
     }
 
     public function getLuxonDateTimeFormatAttribute(): string
