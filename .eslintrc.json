@@ -17,6 +17,17 @@
     "rules": {
         "indent": ["error", 4],
         "no-alert": "warn",
-        "no-console": "warn"
+        "no-console": "warn",
+        "vue/multi-word-component-names": 0
+    },
+    "settings": {
+        "import/resolver": {
+            "alias": {
+                "map": [
+                    ["@", "./resources/js"]
+                ],
+                "extensions": [".js", ".vue"]
+            }
+        }
     }
 }

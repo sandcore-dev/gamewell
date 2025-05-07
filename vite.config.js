@@ -1,14 +1,12 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { defineConfig } from 'vite';
-// eslint-disable-next-line import/no-unresolved
 import laravel from 'laravel-vite-plugin';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import vue from '@vitejs/plugin-vue2';
+import vue from '@vitejs/plugin-vue';
+import tailwindcss from '@tailwindcss/vite';
+import eslint from 'vite-plugin-eslint';
 
 export default defineConfig({
     plugins: [
         laravel([
-            'resources/sass/app.scss',
             'resources/js/app.js',
         ]),
         vue({
@@ -19,10 +17,9 @@ export default defineConfig({
                 },
             },
         }),
+        tailwindcss(),
+        eslint({
+            fix: process.env.NODE_ENV !== 'production',
+        }),
     ],
-    resolve: {
-        alias: {
-            vue: 'vue/dist/vue.esm.js',
-        },
-    },
 });

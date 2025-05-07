@@ -1,25 +1,23 @@
-import Vue from 'vue';
+import { createApp, h } from 'vue';
+import { createInertiaApp } from '@inertiajs/vue3';
+import { i18nVue } from 'laravel-vue-i18n';
 
-const componentFiles = import.meta.glob(
-    './components/**/*.vue',
-    {
-        eager: true,
-        import: 'default',
+createInertiaApp({
+    resolve: (name) => {
+        const pages = import.meta.glob('./Pages/**/*.vue', { eager: true });
+        return pages[`./Pages/${name}.vue`];
     },
-);
-
-Object.entries(componentFiles).forEach((componentFile) => {
-    const [path, module] = componentFile;
-    Vue.component(
-        path
-            .replace('./components/', '')
-            .replaceAll('/', '')
-            .split('.vue')[0],
-        module,
-    );
-});
-
-// eslint-disable-next-line no-unused-vars
-const app = new Vue({
-    el: '#app',
+    setup({
+        el, App, props, plugin,
+    }) {
+        createApp({ render: () => h(App, props) })
+            .use(i18nVue, {
+                resolve: async (lang) => {
+                    const languages = import.meta.glob('../lang/*.json');
+                    return languages[`../lang/${lang}.json`]();
+                },
+            })
+            .use(plugin)
+            .mount(el);
+    },
 });
