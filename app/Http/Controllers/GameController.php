@@ -9,6 +9,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class GameController extends Controller
 {
@@ -17,19 +19,21 @@ class GameController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Renderable
-     */
-    public function index()
+    public function index(): Response
     {
-        $groupedGames = Game::all()->groupBy(function (Game $game) {
-            $firstLetter = substr($game->slug, 0, 1);
-            return is_numeric($firstLetter) ? '#' : strtoupper($firstLetter);
-        });
-
-        return view('games.index')->with('groupedGames', $groupedGames);
+        return Inertia::render('Game/Index', [
+            'gamesByFirstLetter' => Game::query()
+                ->select(
+                    [
+                        'id',
+                        'name',
+                        'slug',
+                        'duration',
+                    ]
+                )
+                ->get()
+                ->groupBy('first_letter'),
+        ]);
     }
 
     /**
@@ -51,13 +55,13 @@ class GameController extends Controller
     public function store(Request $request)
     {
         $request->merge([
-            'slug' => Str::slug($request->input('name')),
-        ]);
+                            'slug' => Str::slug($request->input('name')),
+                        ]);
 
         $request->validate([
-            'name' => ['required', 'string', 'unique:games,name'],
-            'slug' => ['required', 'string', 'unique:games,slug'],
-        ]);
+                               'name' => ['required', 'string', 'unique:games,name'],
+                               'slug' => ['required', 'string', 'unique:games,slug'],
+                           ]);
 
         $game = $request->user()->games()->create($request->only('name', 'slug'));
 
@@ -86,8 +90,8 @@ class GameController extends Controller
         $game->loadCount('levels');
 
         return view('games.edit')->with([
-            'game' => $game,
-        ]);
+                                            'game' => $game,
+                                        ]);
     }
 
     /**
@@ -100,9 +104,9 @@ class GameController extends Controller
     public function update(Request $request, Game $game)
     {
         $request->validate([
-            'name' => ['required', 'string', Rule::unique('games', 'name')->ignoreModel($game)],
-            'slug' => ['required', 'string', Rule::unique('games', 'slug')->ignoreModel($game)],
-        ]);
+                               'name' => ['required', 'string', Rule::unique('games', 'name')->ignoreModel($game)],
+                               'slug' => ['required', 'string', Rule::unique('games', 'slug')->ignoreModel($game)],
+                           ]);
 
         $game->update($request->only('name', 'slug'));
 

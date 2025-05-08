@@ -31,7 +31,7 @@ const logout = useForm({});
                 v-if="authenticated"
             >
                 <div class="grow">
-                    <Link :href="route('games.index')">
+                    <Link :href="route('game.index')">
                         {{ $t('Games') }}
                     </Link>
                 </div>

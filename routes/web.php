@@ -29,7 +29,7 @@ Route::get('/{year}/{week}', [HomeController::class, 'week'])
         ]
     );
 
-Route::resource('/games', GameController::class);
+Route::resource('/game', GameController::class);
 
 Route::prefix('/games/{game}')
     ->group(

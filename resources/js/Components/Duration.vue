@@ -1,39 +1,29 @@
-<template>
-    <span>{{ duration }}</span>
-</template>
+<script setup>
+import { computed } from 'vue';
+import { Duration } from 'luxon';
 
-<script>
-import { DateTime } from 'luxon';
-
-export default {
-    props: [
-        'startTime',
-    ],
-
-    data() {
-        return {
-            duration: '',
-        };
+const props = defineProps({
+    value: {
+        type: Number,
+        required: true,
     },
+});
 
-    mounted() {
-        this.setDuration();
-        setInterval(this.setDuration, 1000);
-    },
-
-    methods: {
-        setDuration() {
-            const diff = DateTime.now().diff(
-                DateTime.fromSQL(this.startTime),
-                ['years', 'months', 'days', 'hours', 'minutes', 'seconds', 'milliseconds'],
-            );
-            this.duration = (diff.years ? `${diff.years}y ` : '')
-                    + (diff.months ? `${diff.months}mn ` : '')
-                    + (diff.days ? `${diff.days}d ` : '')
-                    + (diff.hours ? `${diff.hours}h ` : '')
-                    + (diff.minutes ? `${diff.minutes}m ` : '')
-                    + (diff.seconds ? `${diff.seconds}s` : '');
-        },
-    },
-};
+const formatted = computed(() => {
+    const duration = Duration.fromMillis(props.value * 1000)
+        .shiftTo('years', 'months', 'days', 'hours', 'minutes', 'seconds')
+        .toObject();
+    return (duration.years ? `${duration.years}y ` : '')
+        + (duration.months ? `${duration.months}mn ` : '')
+        + (duration.days ? `${duration.days}d ` : '')
+        + (duration.hours ? `${duration.hours}h ` : '')
+        + (duration.minutes ? `${duration.minutes}m ` : '')
+        + (duration.seconds ? `${duration.seconds}s` : '');
+});
 </script>
+
+<template>
+    <span>
+        {{ formatted }}
+    </span>
+</template>
