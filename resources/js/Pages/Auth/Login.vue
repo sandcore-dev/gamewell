@@ -28,6 +28,7 @@ const form = useForm({
         <div class="col-span-2">
           <form-input
             v-model="form.email"
+            :error="form.errors.email"
             autofocus
           />
         </div>
@@ -38,7 +39,8 @@ const form = useForm({
           <form-input
             type="password"
             v-model="form.password"
-          />
+            :error="form.errors.password"
+         />
         </div>
         <div class="col-span-2" />
         <div class="col-span-2">
