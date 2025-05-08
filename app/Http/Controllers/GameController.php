@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
-use Exception;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -36,94 +37,88 @@ class GameController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Renderable
-     */
-    public function create()
+    public function create(): Response
     {
-        return view('games.create');
+        return Inertia::render('Game/Form', [
+            'url' => URL::action([self::class, 'store']),
+            'title-bar' => Lang::get('Add game'),
+            'button-label' => Lang::get('Add'),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        $request->merge([
-                            'slug' => Str::slug($request->input('name')),
-                        ]);
+        $request->merge(
+            [
+                'slug' => Str::slug($request->input('name')),
+            ]
+        );
 
-        $request->validate([
-                               'name' => ['required', 'string', 'unique:games,name'],
-                               'slug' => ['required', 'string', 'unique:games,slug'],
-                           ]);
+        $validated = $request->validate(
+            [
+                'name' => ['required', 'string', Rule::unique('games', 'name')],
+                'slug' => ['required', 'string', Rule::unique('games', 'slug')],
+            ]
+        );
 
-        $game = $request->user()->games()->create($request->only('name', 'slug'));
+        $game = $request->user()
+            ->games()
+            ->create($validated);
 
-        return redirect()->route('games.show', ['game' => $game]);
+        return Redirect::action([self::class, 'show'], ['game' => $game]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Game $game
-     * @return Renderable
-     */
-    public function show(Game $game)
+    public function show(Game $game): Response
     {
-        return view('games.show')->with('game', $game);
+        return Inertia::render('Game/Show', [
+            'title' => $game->name,
+            'slug' => $game->slug,
+            'duration' => $game->duration,
+            'levels' => $game->levels()
+                ->select(
+                    [
+                        'id',
+                        'game_id',
+                        'name',
+                        'duration',
+                    ]
+                )
+                ->with('game:id,slug')
+                ->orderBy('order')
+                ->get(),
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Game $game
-     * @return Renderable
-     */
-    public function edit(Game $game)
+    public function edit(Game $game): Response
     {
-        $game->loadCount('levels');
-
-        return view('games.edit')->with([
-                                            'game' => $game,
-                                        ]);
+        return Inertia::render('Game/Form', [
+            'method' => 'put',
+            'url' => URL::action([self::class, 'update'], $game),
+            'title-bar' => $game->name,
+            'button-label' => Lang::get('Update'),
+            'name' => $game->name,
+            'slug' => $game->slug,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Game $game
-     * @return RedirectResponse
-     */
-    public function update(Request $request, Game $game)
+    public function update(Request $request, Game $game): RedirectResponse
     {
-        $request->validate([
-                               'name' => ['required', 'string', Rule::unique('games', 'name')->ignoreModel($game)],
-                               'slug' => ['required', 'string', Rule::unique('games', 'slug')->ignoreModel($game)],
-                           ]);
+        $validated = $request->validate(
+            [
+                'name' => ['required', 'string', Rule::unique('games', 'name')->ignoreModel($game)],
+                'slug' => ['required', 'string', Rule::unique('games', 'slug')->ignoreModel($game)],
+            ]
+        );
 
-        $game->update($request->only('name', 'slug'));
+        $game->update($validated);
 
-        return redirect()->route('games.show', ['game' => $game]);
+        return Redirect::action([self::class, 'show'], ['game' => $game]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Game $game
-     * @return RedirectResponse
-     * @throws Exception
-     */
-    public function destroy(Game $game)
+    public function destroy(Game $game): RedirectResponse
     {
         $game->delete();
 
-        return redirect()->route('games.index');
+        return Redirect::action([self::class, 'index']);
     }
 }

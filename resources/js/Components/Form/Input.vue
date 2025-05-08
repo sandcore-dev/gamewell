@@ -1,10 +1,17 @@
 <script setup>
+import Error from '@/Components/Form/Error.vue';
+
 const model = defineModel();
 
 defineProps({
     type: {
         type: String,
         default: 'text',
+    },
+
+    error: {
+        type: [String, null],
+        default: null,
     },
 
     autofocus: {
@@ -21,4 +28,5 @@ defineProps({
     v-model="model"
     :autofocus="autofocus"
   >
+    <error :feedback="error"/>
 </template>
