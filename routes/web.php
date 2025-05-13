@@ -31,29 +31,26 @@ Route::get('/{year}/{week}', [HomeController::class, 'week'])
 
 Route::resource('/game', GameController::class);
 
-Route::prefix('/games/{game}')
+Route::prefix('/game/{game}')
     ->group(
         function () {
-            Route::resource('/levels', LevelController::class)
-                ->parameter('level', 'level:id')
+            Route::resource('/level', LevelController::class)
                 ->except(['index']);
 
-            Route::prefix('/levels/{level}')
+            Route::prefix('/level/{level}')
                 ->group(
                     function () {
-                        Route::resource('/statuses', StatusController::class)
-                            ->parameter('status', 'status:id')
+                        Route::resource('/status', StatusController::class)
                             ->except(['index']);
 
-                        Route::prefix('/statuses/{status}')
+                        Route::prefix('/status/{status}')
                             ->group(
                                 function () {
-                                    Route::resource('/activities', ActivityController::class)
-                                        ->parameter('activity', 'activity:id')
+                                    Route::resource('/activity', ActivityController::class)
                                         ->except(['index', 'create', 'show']);
 
-                                    Route::put('/activities/{activity:id}/stop', [ActivityController::class, 'stop'])
-                                        ->name('activities.stop');
+                                    Route::put('/activity/{activity}/stop', [ActivityController::class, 'stop'])
+                                        ->name('activity.stop');
                                 }
                             );
                     }

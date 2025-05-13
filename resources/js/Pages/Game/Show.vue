@@ -30,6 +30,12 @@ defineProps({
 
 <template>
 <Layout>
+    <div class="text-center mb-3">
+        <anchor :href="route('level.create', slug)">
+            {{ $t('Add level') }}
+        </anchor>
+    </div>
+
     <title-bar class="mb-3" :href="route('game.edit', slug)">
         <template #default>
             {{ title }}
@@ -45,7 +51,7 @@ defineProps({
         class="flex flex-column"
     >
         <div class="grow">
-            <anchor :href="route('levels.show', {game, level})">
+            <anchor :href="route('level.show', {game, level})">
                 {{ name }}
             </anchor>
         </div>
