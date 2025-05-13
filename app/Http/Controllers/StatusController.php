@@ -10,6 +10,8 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class StatusController extends Controller
 {
@@ -18,13 +20,6 @@ class StatusController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param Game $game
-     * @param Level $level
-     * @return Renderable
-     */
     public function create(Game $game, Level $level)
     {
         return view('statuses.create')->with([
@@ -33,14 +28,6 @@ class StatusController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @param Game $game
-     * @param Level $level
-     * @return RedirectResponse
-     */
     public function store(Request $request, Game $game, Level $level)
     {
         $request->validate([
@@ -52,33 +39,19 @@ class StatusController extends Controller
         return redirect()->route('statuses.show', ['game' => $game, 'level' => $level, 'status' => $status]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Game $game
-     * @param Level $level
-     * @param Status $status
-     * @return Renderable
-     */
-    public function show(Game $game, Level $level, Status $status)
+    public function show(Game $game, Level $level, Status $status): Response
     {
-        return view('statuses.show')->with([
-            'game' => $game,
-            'level' => $level,
-            'status' => $status,
-            'updated_activity_id' => session('updated_activity_id'),
-            'alert' => session('alert'),
+        return Inertia::render('Status/Show', [
+            'game' => $game->only(['name', 'slug']),
+            'level' => $level->only(['id', 'name']),
+            ...$status->only(['attempt', 'status']),
+            'activities' => $status->activities()
+                ->orderBy('started_at')
+                ->orderBy('stopped_at')
+                ->get(),
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Game $game
-     * @param Level $level
-     * @param Status $status
-     * @return Renderable
-     */
     public function edit(Game $game, Level $level, Status $status)
     {
         $status->loadCount('activities');
@@ -95,15 +68,6 @@ class StatusController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Game $game
-     * @param Level $level
-     * @param Status $status
-     * @return RedirectResponse
-     */
     public function update(Request $request, Game $game, Level $level, Status $status)
     {
         $request->validate([
@@ -116,15 +80,6 @@ class StatusController extends Controller
         return redirect()->route('statuses.show', ['game' => $game, 'level' => $level, 'status' => $status]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Game $game
-     * @param Level $level
-     * @param Status $status
-     * @return RedirectResponse
-     * @throws Exception
-     */
     public function destroy(Game $game, Level $level, Status $status)
     {
         $status->delete();
