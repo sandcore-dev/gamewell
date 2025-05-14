@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Game;
 use App\Models\Level;
 use App\Models\Status;
-use Exception;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -20,23 +21,44 @@ class StatusController extends Controller
         $this->middleware('auth');
     }
 
-    public function create(Game $game, Level $level)
+    public function create(Game $game, Level $level): Response
     {
-        return view('statuses.create')->with([
-            'game' => $game,
-            'level' => $level,
+        return Inertia::render('Status/Form', [
+            'url' => URL::action([self::class, 'store'], [$game, $level]),
+            'title-bar' => Lang::get('New status of :game - :level', [
+                'game' => $game->name,
+                'level' => $game->level,
+            ]),
+            'game' => $game->only(['name', 'slug']),
+            'level' => $level->only(['id', 'name']),
+            'buttonLabel' => Lang::get('Add'),
         ]);
     }
 
-    public function store(Request $request, Game $game, Level $level)
+    public function store(Request $request, Game $game, Level $level): RedirectResponse
     {
-        $request->validate([
-            'attempt' => ['required', 'numeric', 'min:1', Rule::unique('statuses', 'attempt')->where('level_id', $level->id)],
-        ]);
+        $validated = $request->validate(
+            [
+                'attempt' => [
+                    'required',
+                    'integer',
+                    'min:1',
+                    Rule::unique('statuses', 'attempt')
+                        ->where('level_id', $level->id),
+                ],
+            ]
+        );
 
-        $status = $level->statuses()->create($request->only('attempt'));
+        $status = $level->statuses()->create($validated);
 
-        return redirect()->route('statuses.show', ['game' => $game, 'level' => $level, 'status' => $status]);
+        return Redirect::action(
+            [self::class, 'show'],
+            [
+                'game' => $game,
+                'level' => $level,
+                'status' => $status,
+            ]
+        );
     }
 
     public function show(Game $game, Level $level, Status $status): Response
@@ -44,7 +66,7 @@ class StatusController extends Controller
         return Inertia::render('Status/Show', [
             'game' => $game->only(['name', 'slug']),
             'level' => $level->only(['id', 'name']),
-            ...$status->only(['attempt', 'status']),
+            'status' => $status->only(['id', 'attempt', 'status']),
             'activities' => $status->activities()
                 ->orderBy('started_at')
                 ->orderBy('stopped_at')
@@ -52,38 +74,65 @@ class StatusController extends Controller
         ]);
     }
 
-    public function edit(Game $game, Level $level, Status $status)
+    public function edit(Game $game, Level $level, Status $status): Response
     {
-        $status->loadCount('activities');
-
-        return view('statuses.edit')->with([
-            'game' => $game,
-            'level' => $level,
-            'status' => $status,
-            'options' => [
-                'ongoing' => 'Ongoing',
-                'finished' => 'Finished',
-                'dropped' => 'Dropped',
-            ],
+        return Inertia::render('Status/Form', [
+            'method' => 'put',
+            'url' => URL::action([self::class, 'update'], [$game, $level, $status]),
+            'title-bar' => Lang::get(':game - :level', [
+                'game' => $game->name,
+                'level' => $level->name,
+            ]),
+            'game' => $game->only(['name', 'slug']),
+            'level' => $level->only(['id', 'name']),
+            ...$status->only(['attempt', 'status']),
+            'buttonLabel' => Lang::get('Update'),
         ]);
     }
 
-    public function update(Request $request, Game $game, Level $level, Status $status)
+    public function update(Request $request, Game $game, Level $level, Status $status): RedirectResponse
     {
-        $request->validate([
-            'attempt' => ['required', 'numeric', 'min:1', Rule::unique('statuses', 'attempt')->ignore($status->id)->where('level_id', $status->level_id)],
-            'status' => ['required', 'string', 'in:ongoing,finished,dropped'],
-        ]);
+        $validated = $request->validate(
+            [
+                'attempt' => [
+                    'required',
+                    'numeric',
+                    'min:1',
+                    Rule::unique('statuses', 'attempt')->ignore($status->id)->where(
+                        'level_id',
+                        $status->level_id
+                    ),
+                ],
+                'status' => [
+                    'required',
+                    'string',
+                    'in:ongoing,finished,dropped',
+                ],
+            ]
+        );
 
-        $status->update($request->only('attempt', 'status'));
+        $status->update($validated);
 
-        return redirect()->route('statuses.show', ['game' => $game, 'level' => $level, 'status' => $status]);
+        return Redirect::action(
+            [self::class, 'show'],
+            [
+                'game' => $game,
+                'level' => $level,
+                'status' => $status,
+            ]
+        );
     }
 
-    public function destroy(Game $game, Level $level, Status $status)
+    public function destroy(Game $game, Level $level, Status $status): RedirectResponse
     {
         $status->delete();
 
-        return redirect()->route('levels.show', ['game' => $game, 'level' => $level]);
+        return Redirect::action(
+            [LevelController::class, 'show'],
+            [
+                'game' => $game,
+                'level' => $level,
+            ]
+        );
     }
 }

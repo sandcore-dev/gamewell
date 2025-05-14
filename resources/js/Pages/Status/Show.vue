@@ -17,13 +17,8 @@ defineProps({
         required: true,
     },
 
-    attempt: {
-        type: Number,
-        required: true,
-    },
-
     status: {
-        type: String,
+        type: Object,
         required: true,
     },
 
@@ -64,8 +59,8 @@ function getDuration(start, end) {
         </div>
     </div>
 
-    <title-bar class="mb-3">
-        {{ $t('Attempt :attempt', { attempt }) }} ({{ status }})
+    <title-bar class="mb-3" :href="route('status.edit', { game, level, status })">
+        {{ $t('Attempt :attempt', status) }} ({{ status.status }})
     </title-bar>
 
     <div v-for="(activity) in activities" :key="activity.id" class="grid grid-cols-5">
