@@ -32,8 +32,6 @@ const props = defineProps({
     },
 });
 
-console.log({ ...props });
-
 const form = useForm({
     started_at: props.started_at,
     stopped_at: props.stopped_at,
