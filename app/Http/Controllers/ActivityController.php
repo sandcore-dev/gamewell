@@ -11,6 +11,11 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\URL;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ActivityController extends Controller
 {
@@ -19,107 +24,116 @@ class ActivityController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Game $game
-     * @param Level $level
-     * @param Status $status
-     * @return RedirectResponse
-     */
-    public function store(Game $game, Level $level, Status $status)
+    public function store(Game $game, Level $level, Status $status): RedirectResponse
     {
         $activity = $status->activities()->create();
 
-        return redirect()
-            ->route('statuses.show', ['game' => $game, 'level' => $level, 'status' => $status])
-            ->with('updated_activity_id', $activity->id);
+        return Redirect::action(
+            [StatusController::class, 'show'],
+            [
+                'game' => $game,
+                'level' => $level,
+                'status' => $status,
+            ]
+        )->with('updated_activity_id', $activity->id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Game $game
-     * @param Level $level
-     * @param Status $status
-     * @param Activity $activity
-     * @return Renderable
-     */
-    public function edit(Game $game, Level $level, Status $status, Activity $activity): Renderable
+    public function edit(Game $game, Level $level, Status $status, Activity $activity): Response
     {
-        return view('activities.edit')->with([
-            'game' => $game,
-            'level' => $level,
-            'status' => $status,
-            'activity' => $activity,
+        return Inertia::render('Activity/Form', [
+            'title-bar' => Lang::get('Activity of :game - :level - Attempt :attempt', [
+                'game' => $game->name,
+                'level' => $level->name,
+                'attempt' => $status->attempt,
+            ]),
+
+            'url' => URL::action(
+                [self::class, 'update'],
+                [
+                    'game' => $game,
+                    'level' => $level,
+                    'status' => $status,
+                    'activity' => $activity,
+                ]
+            ),
+            'cancelUrl' => URL::action(
+                [StatusController::class, 'show'],
+                [
+                    'game' => $game,
+                    'level' => $level,
+                    'status' => $status,
+                ]
+            ),
+
+            'started_at' => $activity->started_at->toDateTimeString(),
+            'stopped_at' => $activity->stopped_at->toDateTimeString(),
         ]);
     }
 
-    /**
-     * @param Game $game
-     * @param Level $level
-     * @param Status $status
-     * @param Activity $activity
-     * @param Carbon $now
-     * @return RedirectResponse
-     */
-    public function stop(Game $game, Level $level, Status $status, Activity $activity, Carbon $now)
+    public function update(
+        Request $request,
+        Game $game,
+        Level $level,
+        Status $status,
+        Activity $activity
+    ): RedirectResponse {
+        $validated = $request->validate(
+            [
+                'started_at' => [
+                    'required',
+                    'string',
+                    'date_format:Y-m-d H:i:s',
+                ],
+                'stopped_at' => [
+                    'required',
+                    'string',
+                    'date_format:Y-m-d H:i:s',
+                ],
+            ]
+        );
+
+        $activity->update($validated);
+
+        return Redirect::action(
+            [StatusController::class, 'show'],
+            [
+                'game' => $game,
+                'level' => $level,
+                'status' => $status,
+            ]
+        )->with('updated_activity_id', $activity->id);
+    }
+
+    public function stop(Game $game, Level $level, Status $status, Activity $activity, Carbon $now): RedirectResponse
     {
         if ($activity->stopped_at !== null) {
-            return redirect()
-                ->back()
-                ->with([
-                    'alert' => __('This activity is already stopped.'),
-                    'updated_activity_id' => $activity->id,
-                ]);
+            return Redirect::back()
+                ->with(
+                    [
+                        'alert' => Lang::get('This activity is already stopped.'),
+                        'updated_activity_id' => $activity->id,
+                    ]
+                );
         }
 
         $activity->stopped_at = $now;
         $activity->save();
 
-        return redirect()
-            ->back()
+        return Redirect::back()
             ->with('updated_activity_id', $activity->id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Game $game
-     * @param Level $level
-     * @param Status $status
-     * @param Activity $activity
-     * @return RedirectResponse
-     */
-    public function update(Request $request, Game $game, Level $level, Status $status, Activity $activity)
-    {
-        $request->validate([
-            'started_at' => ['required', 'string', 'date_format:Y-m-d H:i:s'],
-            'stopped_at' => ['required', 'string', 'date_format:Y-m-d H:i:s'],
-        ]);
-
-        $activity->update($request->only('started_at', 'stopped_at'));
-
-        return redirect()
-            ->route('statuses.show', ['game' => $game, 'level' => $level, 'status' => $status])
-            ->with('updated_activity_id', $activity->id);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Game $game
-     * @param Level $level
-     * @param Status $status
-     * @param Activity $activity
-     * @return RedirectResponse
-     * @throws Exception
-     */
-    public function destroy(Game $game, Level $level, Status $status, Activity $activity)
+    public function destroy(Game $game, Level $level, Status $status, Activity $activity): RedirectResponse
     {
         $activity->delete();
 
-        return redirect()->route('statuses.show', ['game' => $game, 'level' => $level, 'status' => $status]);
+        return Redirect::action(
+            [StatusController::class, 'show'],
+            [
+                'game' => $game,
+                'level' => $level,
+                'status' => $status,
+            ]
+        );
     }
 }

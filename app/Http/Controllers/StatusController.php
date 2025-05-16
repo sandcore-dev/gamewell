@@ -61,16 +61,20 @@ class StatusController extends Controller
         );
     }
 
-    public function show(Game $game, Level $level, Status $status): Response
+    public function show(Request $request, Game $game, Level $level, Status $status): Response
     {
         return Inertia::render('Status/Show', [
             'game' => $game->only(['name', 'slug']),
             'level' => $level->only(['id', 'name']),
             'status' => $status->only(['id', 'attempt', 'status']),
-            'activities' => $status->activities()
+
+            'activities' => $activities = $status->activities()
                 ->orderBy('started_at')
                 ->orderBy('stopped_at')
                 ->get(),
+
+            'ongoing-activity-id' => $activities->whereNull('stopped_at')->first()?->id ?? 0,
+            'updated-activity-id' => $request->session()->get('updated_activity_id', 0),
         ]);
     }
 

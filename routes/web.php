@@ -49,7 +49,7 @@ Route::prefix('/game/{game}')
                                     Route::resource('/activity', ActivityController::class)
                                         ->except(['index', 'create', 'show']);
 
-                                    Route::put('/activity/{activity}/stop', [ActivityController::class, 'stop'])
+                                    Route::patch('/activity/{activity}/stop', [ActivityController::class, 'stop'])
                                         ->name('activity.stop');
                                 }
                             );
