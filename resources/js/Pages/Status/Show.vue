@@ -110,7 +110,12 @@ function stopActivity() {
         </div>
 
         <title-bar class="mb-3" :href="route('status.edit', { game, level, status })">
-            {{ $t('Attempt :attempt', status) }} ({{ status.status }})
+            <template #default>
+                {{ $t('Attempt :attempt', status) }} ({{ status.status }})
+            </template>
+            <template #right>
+                <duration :value="status.duration"/>
+            </template>
         </title-bar>
 
         <div

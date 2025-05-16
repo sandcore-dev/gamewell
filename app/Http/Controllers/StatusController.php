@@ -66,7 +66,7 @@ class StatusController extends Controller
         return Inertia::render('Status/Show', [
             'game' => $game->only(['name', 'slug']),
             'level' => $level->only(['id', 'name']),
-            'status' => $status->only(['id', 'attempt', 'status']),
+            'status' => $status->only(['id', 'attempt', 'status', 'duration']),
 
             'activities' => $activities = $status->activities()
                 ->orderBy('started_at')
