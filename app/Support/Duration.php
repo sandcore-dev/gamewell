@@ -51,11 +51,13 @@ class Duration
 
         $duration = $activity->stopped_at->diffInSeconds($activity->started_at, true);
 
-        $orgStartedAt = $activity->getOriginal('started_at');
-        $orgStoppedAt = $activity->getOriginal('stopped_at');
+        if ($activity->isDirty(['started_at', 'stopped_at'])) {
+            $orgStartedAt = $activity->getOriginal('started_at');
+            $orgStoppedAt = $activity->getOriginal('stopped_at');
 
-        if ($orgStoppedAt instanceof Carbon) {
-            $duration -= $orgStoppedAt->diffInSeconds($orgStartedAt);
+            if ($orgStoppedAt instanceof Carbon) {
+                $duration -= $orgStoppedAt->diffInSeconds($orgStartedAt, true);
+            }
         }
 
         $activity->status->increment('duration', $duration);
