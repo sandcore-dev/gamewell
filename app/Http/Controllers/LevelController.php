@@ -23,6 +23,10 @@ class LevelController extends Controller
     public function create(Game $game): Response
     {
         return Inertia::render('Level/Form', [
+            'page.title' => [
+                Lang::get('Add level'),
+                $game->name,
+            ],
             'url' => URL::action([self::class, 'store'], $game),
             'title-bar' => Lang::get('New level of :game', ['game' => $game->name]),
             'button-label' => Lang::get('Add'),
@@ -57,6 +61,10 @@ class LevelController extends Controller
     public function show(Game $game, Level $level): Response
     {
         return Inertia::render('Level/Show', [
+            'page.title' => [
+                $level->name,
+                $game->name,
+            ],
             'game' => [
                 'name' => $game->name,
                 'slug' => $game->slug,
@@ -74,6 +82,11 @@ class LevelController extends Controller
     public function edit(Game $game, Level $level): Response
     {
         return Inertia::render('Level/Form', [
+            'page.title' => [
+                Lang::get('Edit level'),
+                $level->name,
+                $game->name,
+            ],
             'method' => 'put',
             'url' => URL::action([self::class, 'update'], [$game, $level]),
             'title-bar' => Lang::get(

@@ -23,6 +23,8 @@ class GameController extends Controller
     public function index(): Response
     {
         return Inertia::render('Game/Index', [
+            'page.title' => Lang::get('Games'),
+
             'gamesByFirstLetter' => Game::query()
                 ->select(
                     [
@@ -40,6 +42,8 @@ class GameController extends Controller
     public function create(): Response
     {
         return Inertia::render('Game/Form', [
+            'page.title' => Lang::get('Add game'),
+
             'url' => URL::action([self::class, 'store']),
             'title-bar' => Lang::get('Add game'),
             'button-label' => Lang::get('Add'),
@@ -71,6 +75,7 @@ class GameController extends Controller
     public function show(Game $game): Response
     {
         return Inertia::render('Game/Show', [
+            'page.title' => $game->name,
             'title' => $game->name,
             'slug' => $game->slug,
             'duration' => $game->duration,
@@ -92,6 +97,11 @@ class GameController extends Controller
     public function edit(Game $game): Response
     {
         return Inertia::render('Game/Form', [
+            'page.title' => [
+                Lang::get('Edit game'),
+                $game->name,
+            ],
+
             'method' => 'put',
             'url' => URL::action([self::class, 'update'], $game),
             'title-bar' => $game->name,

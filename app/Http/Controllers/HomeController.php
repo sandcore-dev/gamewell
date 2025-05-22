@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -76,6 +75,8 @@ class HomeController extends Controller
         $afterWeek = $afterActivity?->started_at->isoWeek;
 
         return Inertia::render('Home', [
+            'page.title' => Lang::get('Week :week, :year', ['week' => $week, 'year' => $year]),
+
             'activitiesByDay' => $activitiesByDay,
 
             'before' => $beforeActivity

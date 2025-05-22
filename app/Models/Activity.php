@@ -6,6 +6,7 @@ use App\Events\ActivityDeleted;
 use App\Events\ActivitySaved;
 use App\Models;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -66,6 +67,13 @@ class Activity extends Model
     public function scopeInProgress(Builder $query): Builder
     {
         return $query->whereNull('stopped_at');
+    }
+
+    public function name(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => "{$this->started_at?->format('Y-m-d H:i:s')} - {$this->stopped_at?->format('Y-m-d H:i:s')}",
+        );
     }
 
     public function getDateAttribute(): string

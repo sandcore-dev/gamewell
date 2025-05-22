@@ -10,16 +10,26 @@ import { route } from 'ziggy-js';
 
 const page = usePage();
 
+const appName = computed(() => page.props.app.name);
 const pageTitle = computed(() => page.props.page.title);
 const shortcutIcon = computed(() => page.props.shortcut.icon);
 const authenticated = computed(() => page.props.authenticated);
+
+const headTitle = computed(() => ([
+    ...(
+        pageTitle.value instanceof Array
+            ? pageTitle.value
+            : [pageTitle.value]
+    ),
+    appName.value,
+].filter((value) => !!value)).join(' - '));
 
 const logout = useForm({});
 </script>
 
 <template>
     <div>
-        <Head :title="pageTitle">
+        <Head :title="headTitle">
             <link
                 rel="shortcut icon"
                 :href="shortcutIcon"

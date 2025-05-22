@@ -24,6 +24,12 @@ class StatusController extends Controller
     public function create(Game $game, Level $level): Response
     {
         return Inertia::render('Status/Form', [
+            'page.title' => [
+                Lang::get('Add status'),
+                $level->name,
+                $game->name,
+            ],
+
             'url' => URL::action([self::class, 'store'], [$game, $level]),
             'title-bar' => Lang::get('New status of :game - :level', [
                 'game' => $game->name,
@@ -64,6 +70,12 @@ class StatusController extends Controller
     public function show(Request $request, Game $game, Level $level, Status $status): Response
     {
         return Inertia::render('Status/Show', [
+            'page.title' => [
+                $status->name,
+                $level->name,
+                $game->name,
+            ],
+
             'game' => $game->only(['name', 'slug']),
             'level' => $level->only(['id', 'name']),
             'status' => $status->only(['id', 'attempt', 'status', 'duration']),
@@ -81,6 +93,13 @@ class StatusController extends Controller
     public function edit(Game $game, Level $level, Status $status): Response
     {
         return Inertia::render('Status/Form', [
+            'page.title' => [
+                Lang::get('Edit status'),
+                $status->name,
+                $level->name,
+                $game->name,
+            ],
+
             'method' => 'put',
             'url' => URL::action([self::class, 'update'], [$game, $level, $status]),
             'title-bar' => Lang::get(':game - :level', [

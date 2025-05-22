@@ -39,7 +39,8 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return [
-            'page.title' => Config::get('app.name'),
+            'app.name' => Config::get('app.name'),
+            'page.title' => null,
             'authenticated' => Auth::check(),
             'shortcut.icon' => URL::asset(Config::get('gamewell.header.favicon')),
             ...parent::share($request),

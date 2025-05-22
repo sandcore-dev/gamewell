@@ -41,6 +41,14 @@ class ActivityController extends Controller
     public function edit(Game $game, Level $level, Status $status, Activity $activity): Response
     {
         return Inertia::render('Activity/Form', [
+            'page.title' => [
+                Lang::get('Edit activity'),
+                $activity->name,
+                $status->name,
+                $level->name,
+                $game->name,
+            ],
+
             'title-bar' => Lang::get('Activity of :game - :level - Attempt :attempt', [
                 'game' => $game->name,
                 'level' => $level->name,
