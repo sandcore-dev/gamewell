@@ -10,7 +10,10 @@ defineProps({
 </script>
 
 <template>
-    <Link class="hover:text-cyan-400" :href="href">
-        <slot/>
-    </Link>
+  <Link
+    class="hover:text-cyan-400"
+    :href="href"
+  >
+    <slot />
+  </Link>
 </template>

@@ -45,45 +45,48 @@ const form = useForm({
 </script>
 
 <template>
-<Layout>
+  <Layout>
     <title-bar class="mb-3">
-        {{ titleBar }}
+      {{ titleBar }}
     </title-bar>
 
     <form @submit.prevent="form.submit(method, url)">
-        <div class="grid grid-cols-5 gap-3 mt-3">
-            <div class="text-right col-span-2">
-                {{ $t('Name') }}
-            </div>
-            <div class="col-span-2">
-                <form-input
-                    v-model="form.name"
-                    :error="form.errors.name"
-                    autofocus
-                />
-            </div>
-            <template v-if="slug">
-                <div class="text-right col-span-2">
-                    {{ $t('Slug') }}
-                </div>
-                <div class="col-span-2">
-                    <form-input
-                        v-model="form.slug"
-                        :error="form.errors.slug"
-                        autofocus
-                    />
-                </div>
-            </template>
-            <div class="col-span-2" />
-            <div class="col-span-2">
-                <form-button type="submit">
-                    {{ buttonLabel }}
-                </form-button>
-                <form-button class="ml-3 bg-neutral-300" :href="route('game.index')">
-                    {{ $t('Cancel') }}
-                </form-button>
-            </div>
+      <div class="grid grid-cols-5 gap-3 mt-3">
+        <div class="text-right col-span-2">
+          {{ $t('Name') }}
         </div>
+        <div class="col-span-2">
+          <form-input
+            v-model="form.name"
+            :error="form.errors.name"
+            autofocus
+          />
+        </div>
+        <template v-if="slug">
+          <div class="text-right col-span-2">
+            {{ $t('Slug') }}
+          </div>
+          <div class="col-span-2">
+            <form-input
+              v-model="form.slug"
+              :error="form.errors.slug"
+              autofocus
+            />
+          </div>
+        </template>
+        <div class="col-span-2" />
+        <div class="col-span-2">
+          <form-button type="submit">
+            {{ buttonLabel }}
+          </form-button>
+          <form-button
+            class="ml-3 bg-neutral-300"
+            :href="route('game.index')"
+          >
+            {{ $t('Cancel') }}
+          </form-button>
+        </div>
+      </div>
     </form>
-</Layout>
+  </Layout>
 </template>

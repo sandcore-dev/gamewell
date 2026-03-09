@@ -8,7 +8,10 @@ defineProps({
 </script>
 
 <template>
-    <small class="block text-red-500 font-bold" v-show="feedback">
-        {{ feedback }}
-    </small>
+  <small
+    class="block text-red-500 font-bold"
+    v-show="feedback"
+  >
+    {{ feedback }}
+  </small>
 </template>

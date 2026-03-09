@@ -14,30 +14,34 @@ defineProps({
 </script>
 
 <template>
-    <Layout>
-        <div class="text-center mb-3">
-            <anchor :href="route('game.create')">
-                {{ $t('Add game') }}
-            </anchor>
+  <Layout>
+    <div class="text-center mb-3">
+      <anchor :href="route('game.create')">
+        {{ $t('Add game') }}
+      </anchor>
+    </div>
+    <div
+      v-for="(games, firstLetter) in gamesByFirstLetter"
+      :key="firstLetter"
+      class="mb-3"
+    >
+      <title-bar class="mb-3">
+        {{ firstLetter }}
+      </title-bar>
+      <div
+        v-for="({ id, name, slug, duration }) in games"
+        :key="id"
+        class="flex flex-column mb-1"
+      >
+        <div class="grow">
+          <anchor :href="route('game.show', { slug })">
+            {{ name }}
+          </anchor>
         </div>
-        <div v-for="(games, firstLetter) in gamesByFirstLetter" :key="firstLetter" class="mb-3">
-            <title-bar class="mb-3">
-                {{ firstLetter }}
-            </title-bar>
-            <div
-                v-for="({ id, name, slug, duration }) in games"
-                :key="id"
-                class="flex flex-column mb-1"
-            >
-                <div class="grow">
-                    <anchor :href="route('game.show', { slug })">
-                        {{ name }}
-                    </anchor>
-                </div>
-                <div>
-                    <duration :value="duration"/>
-                </div>
-            </div>
+        <div>
+          <duration :value="duration" />
         </div>
-    </Layout>
+      </div>
+    </div>
+  </Layout>
 </template>

@@ -40,7 +40,7 @@ const form = useForm({
             type="password"
             v-model="form.password"
             :error="form.errors.password"
-         />
+          />
         </div>
         <div class="col-span-2" />
         <div class="col-span-2">

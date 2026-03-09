@@ -29,35 +29,38 @@ defineProps({
 </script>
 
 <template>
-<Layout>
+  <Layout>
     <div class="text-center mb-3">
-        <anchor :href="route('level.create', slug)">
-            {{ $t('Add level') }}
-        </anchor>
+      <anchor :href="route('level.create', slug)">
+        {{ $t('Add level') }}
+      </anchor>
     </div>
 
-    <title-bar class="mb-3" :href="route('game.edit', slug)">
-        <template #default>
-            {{ title }}
-        </template>
-        <template #right>
-            <duration :value="duration"/>
-        </template>
+    <title-bar
+      class="mb-3"
+      :href="route('game.edit', slug)"
+    >
+      <template #default>
+        {{ title }}
+      </template>
+      <template #right>
+        <duration :value="duration" />
+      </template>
     </title-bar>
 
     <div
-        v-for="({id: level, game, name, duration}) in levels"
-        :key="level"
-        class="flex flex-column"
+      v-for="({id: level, game, name, duration}) in levels"
+      :key="level"
+      class="flex flex-column"
     >
-        <div class="grow">
-            <anchor :href="route('level.show', {game, level})">
-                {{ name }}
-            </anchor>
-        </div>
-        <div>
-            <duration :value="duration"/>
-        </div>
+      <div class="grow">
+        <anchor :href="route('level.show', {game, level})">
+          {{ name }}
+        </anchor>
+      </div>
+      <div>
+        <duration :value="duration" />
+      </div>
     </div>
-</Layout>
+  </Layout>
 </template>

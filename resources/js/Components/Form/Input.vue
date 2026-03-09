@@ -28,5 +28,5 @@ defineProps({
     v-model="model"
     :autofocus="autofocus"
   >
-    <error :feedback="error"/>
+  <error :feedback="error" />
 </template>

@@ -81,79 +81,94 @@ function stopActivity() {
 </script>
 
 <template>
-    <Layout>
-        <div class="grid grid-cols-3 mb-3">
-            <div>
-                <anchor :href="route('game.show', game)">
-                    {{ game.name }}
-                </anchor>
-            </div>
-            <div class="text-center">
-                <template v-if="status.status === 'ongoing'">
-                    <form @submit.prevent="startActivity()" v-show="!ongoingActivityId">
-                        <button type="submit" class="font-bold text-lime-400 cursor-pointer">
-                            {{ $t('Start') }}
-                        </button>
-                    </form>
-                    <form @submit.prevent="stopActivity()" v-show="ongoingActivityId">
-                        <button type="submit" class="font-bold text-red-600 cursor-pointer">
-                            {{ $t('Stop') }}
-                        </button>
-                    </form>
-                </template>
-            </div>
-            <div class="text-right">
-                <anchor :href="route('level.show', { game, level })">
-                    {{ level.name }}
-                </anchor>
-            </div>
-        </div>
+  <Layout>
+    <div class="grid grid-cols-3 mb-3">
+      <div>
+        <anchor :href="route('game.show', game)">
+          {{ game.name }}
+        </anchor>
+      </div>
+      <div class="text-center">
+        <template v-if="status.status === 'ongoing'">
+          <form
+            @submit.prevent="startActivity()"
+            v-show="!ongoingActivityId"
+          >
+            <button
+              type="submit"
+              class="font-bold text-lime-400 cursor-pointer"
+            >
+              {{ $t('Start') }}
+            </button>
+          </form>
+          <form
+            @submit.prevent="stopActivity()"
+            v-show="ongoingActivityId"
+          >
+            <button
+              type="submit"
+              class="font-bold text-red-600 cursor-pointer"
+            >
+              {{ $t('Stop') }}
+            </button>
+          </form>
+        </template>
+      </div>
+      <div class="text-right">
+        <anchor :href="route('level.show', { game, level })">
+          {{ level.name }}
+        </anchor>
+      </div>
+    </div>
 
-        <title-bar class="mb-3" :href="route('status.edit', { game, level, status })">
-            <template #default>
-                {{ $t('Attempt :attempt', status) }} ({{ status.status }})
-            </template>
-            <template #right>
-                <duration :value="status.duration"/>
-            </template>
-        </title-bar>
+    <title-bar
+      class="mb-3"
+      :href="route('status.edit', { game, level, status })"
+    >
+      <template #default>
+        {{ $t('Attempt :attempt', status) }} ({{ status.status }})
+      </template>
+      <template #right>
+        <duration :value="status.duration" />
+      </template>
+    </title-bar>
 
-        <div
-            v-for="(activity) in activities"
-            :key="activity.id"
-            :class="{
-                grid: true,
-                'grid-cols-5': true,
-                'mb-1': true,
-                'animate-[highlight-fade_4s_ease-out]': activity.id === updatedActivityId,
-            }"
+    <div
+      v-for="(activity) in activities"
+      :key="activity.id"
+      :class="{
+        grid: true,
+        'grid-cols-5': true,
+        'mb-1': true,
+        'animate-[highlight-fade_4s_ease-out]': activity.id === updatedActivityId,
+      }"
+    >
+      <div class="col-span-2">
+        <anchor :href="route('activity.edit', { game, level, status, activity })">
+          {{ formatDate(activity.started_at) }}
+        </anchor>
+      </div>
+      <div class="col-span-2">
+        <anchor
+          v-if="!!activity.stopped_at"
+          :href="route('activity.edit', { game, level, status, activity })"
         >
-            <div class="col-span-2">
-                <anchor :href="route('activity.edit', { game, level, status, activity })">
-                    {{ formatDate(activity.started_at) }}
-                </anchor>
-            </div>
-            <div class="col-span-2">
-                <anchor
-                    v-if="!!activity.stopped_at"
-                    :href="route('activity.edit', { game, level, status, activity })"
-                >
-                    {{ formatDate(activity.stopped_at) }}
-                </anchor>
-                <now v-else/>
-            </div>
-            <div class="text-right">
-                <duration
-                    v-if="!!activity.stopped_at"
-                    :value="getDuration(activity.started_at, activity.stopped_at)"
-                />
-                <duration-rolling
-                    v-else
-                    :start-time="activity.started_at"
-                />
-            </div>
-        </div>
-    </Layout>
+          {{ formatDate(activity.stopped_at) }}
+        </anchor>
+        <now v-else />
+      </div>
+      <div class="text-right">
+        <duration
+          v-if="!!activity.stopped_at"
+          :value="getDuration(activity.started_at, activity.stopped_at)"
+        />
+        <duration-rolling
+          v-else
+          :start-time="activity.started_at"
+        />
+      </div>
+    </div>
+  </Layout>
 </template>
 
 <style>

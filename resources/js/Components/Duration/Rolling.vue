@@ -31,5 +31,5 @@ onMounted(() => {
 </script>
 
 <template>
-    <span>{{ duration }}</span>
+  <span>{{ duration }}</span>
 </template>

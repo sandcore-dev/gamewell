@@ -22,5 +22,5 @@ onMounted(() => {
 </script>
 
 <template>
-    <span>{{ timestamp }}</span>
+  <span>{{ timestamp }}</span>
 </template>

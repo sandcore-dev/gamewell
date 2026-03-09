@@ -1,28 +1,21 @@
-import pluginVue from 'eslint-plugin-vue'
-import globals from 'globals'
-import vueParser from 'vue-eslint-parser';
-import pluginAirbnb from 'eslint-config-airbnb-base';
+import js from "@eslint/js";
+import globals from "globals";
+import pluginVue from "eslint-plugin-vue";
+import {defineConfig} from "eslint/config";
 
-export default [
-    ...pluginVue.configs['flat/strongly-recommended'],
-    pluginAirbnb,
+export default defineConfig([
     {
-        files: ["*.vue", "**/*.vue"],
-
+        files: ["**/*.{js,mjs,cjs,vue}"],
+        plugins: {js},
+        extends: ["js/recommended"],
         languageOptions: {
-            globals: {
-                ...globals.browser
-            },
-            sourceType: 'module',
-            parser: vueParser,
+            globals: globals.browser
         },
     },
+    pluginVue.configs["flat/strongly-recommended"],
     {
         rules: {
-            indent: ["error", 4],
-            // "no-alert": "warn",
-            // "no-console": "warn",
-            // "vue/multi-word-component-names": 0
-        },
+            'vue/multi-word-component-names': 'off',
+        }
     }
-]
+]);

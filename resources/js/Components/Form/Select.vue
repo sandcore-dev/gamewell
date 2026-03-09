@@ -32,18 +32,18 @@ defineProps({
 </script>
 
 <template>
-    <select
-        class="bg-white text-black font-bold p-1 min-w-full p-2"
-        v-model="model"
-        :autofocus="autofocus"
+  <select
+    class="bg-white text-black font-bold p-1 min-w-full p-2"
+    v-model="model"
+    :autofocus="autofocus"
+  >
+    <option
+      v-for="(option) in options"
+      :key="option[valueField] || option[textField]"
+      :value="option[valueField] || option[textField]"
     >
-        <option
-            v-for="(option) in options"
-            :key="option[valueField] || option[textField]"
-            :value="option[valueField] || option[textField]"
-        >
-            {{ option[textField] || option[valueField] }}
-        </option>
-    </select>
-    <error :feedback="error"/>
+      {{ option[textField] || option[valueField] }}
+    </option>
+  </select>
+  <error :feedback="error" />
 </template>
