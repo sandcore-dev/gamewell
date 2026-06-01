@@ -1,7 +1,9 @@
 <script setup>
 import Error from '@/Components/Form/Error.vue';
 
-const model = defineModel();
+const model = defineModel({
+    type: [Number, String, null],
+});
 
 defineProps({
     error: {
@@ -33,7 +35,7 @@ defineProps({
 
 <template>
   <select
-    class="bg-white text-black font-bold p-1 min-w-full p-2"
+    class="bg-white text-black font-bold min-w-full p-2"
     v-model="model"
     :autofocus="autofocus"
   >
